@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33103.184
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Function 을 이해하기 위한 Sokoban refactoring", "Function 을 이해하기 위한 Sokoban refactoring.csproj", "{2CEFD6D8-70E0-4736-81EC-B31658E77570}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2CEFD6D8-70E0-4736-81EC-B31658E77570}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CEFD6D8-70E0-4736-81EC-B31658E77570}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CEFD6D8-70E0-4736-81EC-B31658E77570}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CEFD6D8-70E0-4736-81EC-B31658E77570}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0FCCF2FA-A9C4-4F42-B225-1F59B9A05D07}
+	EndGlobalSection
+EndGlobal
