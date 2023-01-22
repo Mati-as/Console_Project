@@ -1,8 +1,13 @@
 ﻿using System;
+using System.Numerics;
+using System.Security.Cryptography.X509Certificates;
+using System.Media;
+using System.Windows.Input;
 
-namespace Sokoban_Mati
+
+namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
 {//namespace 선언해야 다른 네임스페이스에서도 불러올 수 있다
-//안그러면 namespaceaname.something 같이 불러와야한다.
+ //안그러면 namespaceaname.something 같이 불러와야한다.
     enum Direction // 방향을 저장하는 타입
     {
         None,
@@ -26,11 +31,12 @@ namespace Sokoban_Mati
 
         internal static Player playerFirst = new Player();
         internal static Player playerSecond = new Player();
+       
 
         public static void Main()
         {
-           
 
+            PlayMusic playerMusic = new PlayMusic();
             // 초기 세팅
             Console.ResetColor(); // 컬러를 초기화 하는 것
             Console.CursorVisible = false; // 커서를 숨기기
@@ -81,8 +87,8 @@ namespace Sokoban_Mati
 
             //};
 
-           
-            
+
+
             playerFirst.X = MIN_X + 2;
             playerFirst.Y = MIN_Y + 2;
             playerFirst.PreX = 0;
@@ -116,7 +122,7 @@ namespace Sokoban_Mati
             int randomBoxNumX = 0;
             int randomBoxNumY = 0;
 
-          
+
 
             Box[] boxForFirst = new Box[BOX_COUNT] {
                   new Box { X = random.Next(MIN_X + 2, MAX_X - 2)/2*2 , Y = random.Next(MIN_Y + 2, MAX_Y - 1), isOnGoal = false},
@@ -129,7 +135,7 @@ namespace Sokoban_Mati
 
 
             Box[] boxForSecond = new Box[]
-             {              
+             {
                 new Box { X = random.Next(MIN_X_SECOND + 2, MAX_X_SECOND - 2)/2*2, Y = random.Next(MIN_Y_SECOND + 2, MAX_Y_SECOND - 1), isOnGoal = false},
                 new Box { X = random.Next(MIN_X_SECOND + 2, MAX_X_SECOND - 2)/2*2, Y = random.Next(MIN_Y_SECOND + 2, MAX_Y_SECOND - 1), isOnGoal = false},
                 new Box { X = random.Next(MIN_X_SECOND + 2, MAX_X_SECOND - 2)/2*2, Y = random.Next(MIN_Y_SECOND + 2, MAX_Y_SECOND - 1), isOnGoal = false},
@@ -149,31 +155,31 @@ namespace Sokoban_Mati
 
 
 
-            // 두번쨰 플레이어를 위한 맵
-            Wall[] wallForSecond = new Wall[]
-           {
-                new Wall { X =  MIN_X_SECOND + 20,Y = MIN_Y_SECOND + 10 },
-                new Wall { X =  MIN_X_SECOND + 4, Y = MIN_Y_SECOND + 5 },
-                new Wall { X =  MIN_X_SECOND + 12,Y = MIN_Y_SECOND + 11 },
-                new Wall { X =  MIN_X_SECOND +16, Y = MIN_Y_SECOND + 10 }
-           };
+           // // 두번쨰 플레이어를 위한 맵
+           // Wall[] wallForSecond = new Wall[]
+           //{
+           //     new Wall { X =  MIN_X_SECOND + 20,Y = MIN_Y_SECOND + 10 },
+           //     new Wall { X =  MIN_X_SECOND + 4, Y = MIN_Y_SECOND + 5 },
+           //     new Wall { X =  MIN_X_SECOND + 12,Y = MIN_Y_SECOND + 11 },
+           //     new Wall { X =  MIN_X_SECOND +16, Y = MIN_Y_SECOND + 10 }
+           //};
 
 
-            Goal[] goalFirst = new Goal[]
-            {
-                new Goal { X = MIN_X + 8, Y = MIN_Y + 9 },
-                new Goal { X = MIN_X + 6, Y = MIN_Y + 6 },
-                new Goal { X = MIN_X + 4, Y = MIN_Y + 6 },
-                new Goal { X = MIN_X + 10,Y = MIN_Y + 8 }
-            };
+           // Goal[] goalFirst = new Goal[]
+           // {
+           //     new Goal { X = MIN_X + 8, Y = MIN_Y + 9 },
+           //     new Goal { X = MIN_X + 6, Y = MIN_Y + 6 },
+           //     new Goal { X = MIN_X + 4, Y = MIN_Y + 6 },
+           //     new Goal { X = MIN_X + 10,Y = MIN_Y + 8 }
+           // };
 
-            Goal[] goalSecond = new Goal[]
-            {
-                new Goal { X = MIN_X_SECOND + 8, Y = MIN_Y_SECOND + 9 },
-                new Goal { X = MIN_X_SECOND + 4, Y = MIN_Y_SECOND + 2 },
-                new Goal { X = MIN_X_SECOND + 6, Y = MIN_Y_SECOND + 6 },
-                new Goal { X = MIN_X_SECOND + 10,Y = MIN_Y_SECOND + 7 }
-            };
+           // Goal[] goalSecond = new Goal[]
+           // {
+           //     new Goal { X = MIN_X_SECOND + 8, Y = MIN_Y_SECOND + 9 },
+           //     new Goal { X = MIN_X_SECOND + 4, Y = MIN_Y_SECOND + 2 },
+           //     new Goal { X = MIN_X_SECOND + 6, Y = MIN_Y_SECOND + 6 },
+           //     new Goal { X = MIN_X_SECOND + 10,Y = MIN_Y_SECOND + 7 }
+           // };
             //// 박스 위치를 저장하기 위한 변수
             //int[] boxPositionsX = { 5, 7, 4 };
             //int[] boxPositionsY = { 5, 3, 4 };
@@ -187,44 +193,150 @@ namespace Sokoban_Mati
             //// 골 위치를 저장하기 위한 변수
             //int[] goalPositionsX = { 9, 1, 3 };
             //int[] goalPositionsY = { 9, 2, 3 };
-            ConsoleKey key;
-         
+            
 
-            string errorMessage = "[Error] 플레이어 이동 방향 데이터가 오류입니다. : {player.MoveDirection}";
+            ConsoleKey key;
+
+
+            while(true)
+            {
+                //intro
+               const int START_OF_DOOR_X = 25;
+               const int START_OF_DOOR_Y = 3;
+               const int END_OF_DOOR_X = 35;
+               const int END_OF_DOOR_Y = 12;
+               const int SIZE_OF_DOOR = 10;
+               const int DOOR_HANDLE_X = START_OF_DOOR_X + 2;
+               const int DOOR_HANDLE_Y = START_OF_DOOR_Y + 5;
+
+                RenderObject(START_OF_DOOR_X, START_OF_DOOR_Y, "----------");
+
+                for(int i = START_OF_DOOR_Y; i < END_OF_DOOR_Y; i++)
+                {
+                    RenderObject(START_OF_DOOR_X, i, "I");
+                    RenderObject(START_OF_DOOR_X + SIZE_OF_DOOR, i, "I");
+                    RenderObject(DOOR_HANDLE_X, DOOR_HANDLE_Y, "o");
+                }
+                RenderObject(START_OF_DOOR_X - 10, END_OF_DOOR_Y, "-------------------------------");
+
+                Console.ForegroundColor = ConsoleColor.White;
+                Thread.Sleep(200);
+                RenderObject(15, 15, "Hey, do you want to open this door?");
+                Thread.Sleep(2100);
+                RenderObject(15, 16, "If so, say whatever if you want to.");
+                Thread.Sleep(2500);
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                RenderObject(15, 18, "(Press Any Key You Want.)");
+              
+                RenderObject(0,0 ,"");
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.ForegroundColor = ConsoleColor.Black;
+
+                key = Console.ReadKey().Key;
+
+                if (Console.KeyAvailable)
+                {
+                    Console.Clear();
+                    break;
+                }
+            }
+
+
+
+
+            while (true)
+            {
+              
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+
+                const int START_OF_DOOR_X = 25;
+                const int START_OF_DOOR_Y = 3;
+                const int END_OF_DOOR_X = 35;
+                const int END_OF_DOOR_Y = 12;
+                const int SIZE_OF_DOOR = 10;
+                const int DOOR_HANDLE_X = START_OF_DOOR_X + 2;
+                const int DOOR_HANDLE_Y = START_OF_DOOR_Y + 5;
+
+                RenderObject(START_OF_DOOR_X, START_OF_DOOR_Y, "----------");
+
+                for (int i = START_OF_DOOR_Y; i < END_OF_DOOR_Y; i++)
+                {
+                    RenderObject(START_OF_DOOR_X, i, "I");
+                    RenderObject(START_OF_DOOR_X + SIZE_OF_DOOR, i, "I");
+                    RenderObject(DOOR_HANDLE_X, DOOR_HANDLE_Y, "o");
+                }
+                RenderObject(START_OF_DOOR_X - 10, END_OF_DOOR_Y, "-------------------------------");
+               
+
+                    Console.ForegroundColor = ConsoleColor.White;
+                    RenderObject(15, 15, "And you know what?");
+
+                    Thread.Sleep(2100);
+
+              
+
+                    RenderObject(17, 15, "You shouldn't have....");
+                    Thread.Sleep(2100);
+
+
+                    
+                    playerMusic.SoundPlayers(@"C:\\Users\\Mati Kong\\Documents\\Matias\\doonot_open_the_closed_door\\doonot_open_the_closed_door\\PLEASE_DONT_OPEN_THE_CLOSED_DOOR\\PLEASE_DONT_OPEN_THE_CLOSED_DOOR\\bin\\Debug\\net7.0\\Noisy.wav");
+
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                    RenderObject(15, 15, " You shouldn't have....");
+                    Thread.Sleep(2100); 
+
+                for(int i = 0; i < 30; i++)
+                {
+                    RenderObject(10, i, " hahahahahahahahahaahahahahahahahahahahahahah");
+                    Thread.Sleep(120);
+                }
+                break;
+
+                
+
+            }
+
+
+            
+           
+            //string errorMessage = "[Error] 플레이어 이동 방향 데이터가 오류입니다. : {player.MoveDirection}";
 
             // 게임 루프 구성
             while (true)
             {
                 Render();
-               
+
+                
+
 
                 int boxOnGoalCount = 0;
                 int boxOnGoalCountForSeCond = 0;
 
                 key = ConsoleKey.Applications;
 
-                
-                    if (Console.KeyAvailable)
-                    {   
-                       
-                        key = Console.ReadKey().Key;
-                        UpdateForSecond(key);
-                        Update(key);
 
-                    }
+                if (Console.KeyAvailable)
+                {
 
-                    Console.SetCursorPosition(25, 30);
-                    Console.WriteLine($"key1 : {key}");
+                    key = Console.ReadKey().Key;
+                    UpdateForSecond(key);
+                    Update(key);
 
-    
+                }
+
+                Console.SetCursorPosition(25, 30);
+                Console.WriteLine($"key1 : {key}");
+
+
                 //입력값을 블록킹을 방지하며 받아오기
 
-          
+
 
 
 
                 // 박스와 골의 처리
-               
+
 
                 // 골 지점에 박스에 존재하냐?
                 for (int boxId = 0; boxId < BOX_COUNT; ++boxId) // 모든 골 지점에 대해서
@@ -308,7 +420,7 @@ namespace Sokoban_Mati
 
                 // 두번째 플레이어를 그린다.            
                 RenderObject(playerSecond.X, playerSecond.Y, "♧");
-                if(playerSecond.X == playerSecond.PreX && playerSecond.Y == playerSecond.PreY)
+                if (playerSecond.X == playerSecond.PreX && playerSecond.Y == playerSecond.PreY)
                 {
                     RenderObject(playerSecond.X, playerSecond.Y, "♤");
                 }
@@ -316,7 +428,7 @@ namespace Sokoban_Mati
                 {
                     RenderObject(playerSecond.PreX, playerSecond.PreY, "  ");
                 }
-                
+
 
                 Console.ForegroundColor = ConsoleColor.Yellow;
 
@@ -414,12 +526,12 @@ namespace Sokoban_Mati
                 /// 1P 공백함수 위치 조건문
                 for (int i = 0; i < GOAL_COUNT; i++)
                 {
-                 if    (playerFirst.X != goalFirst[i].X
-                        && playerFirst.Y != goalFirst[i].Y
-                        && playerFirst.X != boxForFirst[i].X
-                        && playerFirst.Y != boxForFirst[i].Y
-                      
-                    )
+                    if (playerFirst.X != goalFirst[i].X
+                           && playerFirst.Y != goalFirst[i].Y
+                           && playerFirst.X != boxForFirst[i].X
+                           && playerFirst.Y != boxForFirst[i].Y
+
+                       )
 
                     {
                         playerFirst.PreX = preX;
@@ -456,8 +568,7 @@ namespace Sokoban_Mati
 
 
                         default:
-                            ExitWithError(errorMessage);
-
+                          
                             return;
                     }
 
@@ -811,7 +922,7 @@ namespace Sokoban_Mati
                 }
 
 
-               
+
 
 
             }
@@ -849,8 +960,6 @@ namespace Sokoban_Mati
                     playerFirst.Y = Math.Min(playerFirst.Y + 1, MAX_Y);
                     playerFirst.MoveDirection = Direction.Down;
                 }
-
-
             }
 
             void MoveSecondPlayer(ConsoleKey key, ref Player secondPlayer)
@@ -885,6 +994,8 @@ namespace Sokoban_Mati
                 }
             }
 
+           
+
 
 
         }
@@ -904,7 +1015,7 @@ namespace Sokoban_Mati
 
 
 
-   
+
 }
 
 
