@@ -13,5 +13,12 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
         public int X;
         public int Y;
         public bool isOnGoal = false;
+        
+        
+            
+
+
+       
     }
+    
 }

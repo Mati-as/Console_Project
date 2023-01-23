@@ -1,67 +1,88 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
-//using PLEASE_DONT_OPEN_THE_CLOSED_DOOR;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection.Metadata;
+using System.Text;
+using System.Threading.Tasks;
+using PLEASE_DONT_OPEN_THE_CLOSED_DOOR;
 
-//namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
-//{
+namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
+{
 
-//    public class PaintingDoor
-//    {
+    public class PaintingDoor
+    {
 
-//        Rendering PaintWall = new Rendering()
-//        {
-//        };
+         public void PaintDoor(int x, int y ,int z)
+         {
+
+            
+            string iString = "I";
+            string dash = "-";
+
+            const int DOOR_SIZE_WIDTH = 10;
+            const int DOOR_SIZE_HEIGHT = 10;
+            const int HANDLE_X = DOOR_SIZE_WIDTH - 2;
+            const int HANDLE_Y = DOOR_SIZE_HEIGHT - 2;
+            const int FLOOR_LENGTH = 70;
+
+            Console.ForegroundColor = (ConsoleColor)z;
+
+            RenderDoor(x, y, "----------");
+            RenderDoor(x + 2, y + 4, "o");  //Handle of the door
+
+            for (int i = y; i < y + DOOR_SIZE_HEIGHT; i++)
+            {
+                Console.ForegroundColor = (ConsoleColor)z;
 
 
-//        int START_OF_DOOR_X = 25;
-//        int START_OF_DOOR_Y = 3;
-//        int END_OF_DOOR_X = 35;
-//        int END_OF_DOOR_Y = 12;
-//        int SIZE_OF_DOOR = 10;
-//        int DOOR_HANDLE_X = START_OF_DOOR_X + 2;
-//        int DOOR_HANDLE_Y = START_OF_DOOR_Y + 5;
-
-//        RenderObject(START_OF_DOOR_X, START_OF_DOOR_Y, "----------");
-
-//                for(int i = START_OF_DOOR_Y; i<END_OF_DOOR_Y; i++)
-//            {
-//                    RenderObject(START_OF_DOOR_X, i, "I");
-//        RenderObject(START_OF_DOOR_X + SIZE_OF_DOOR, i, "I");
-//        RenderObject(DOOR_HANDLE_X, DOOR_HANDLE_Y, "o");
-
-//        RenderObject(START_OF_DOOR_X - 10, END_OF_DOOR_Y, "-------------------------------");
-
-//        Console.ForegroundColor = ConsoleColor.White;
-//                Thread.Sleep(200);
-//                RenderObject(15, 15, "Hey, do you want to open this door?");
-
-//        Thread.Sleep(2100);
-
-//                RenderObject(15, 16, "If so, say whatever if you want to.");
-//        Thread.Sleep(2500);
-
-//                Console.ForegroundColor = ConsoleColor.DarkGray;
-//                RenderObject(15, 18, "(Press Any Key You Want.)");
-
-//         void RenderObject(int x, int y, string obj)
-//    {
-//        Console.SetCursorPosition(x, y);
-//        Console.Write(obj);
-//    }
-
-//    }
+                RenderDoor(x + DOOR_SIZE_WIDTH, i, iString);
+                RenderDoor(x, i, iString);
 
 
 
+            };
 
 
-//}
-    
+            for (int floorLength = 0; floorLength < FLOOR_LENGTH; ++floorLength)
+            {
+                Random random = new Random();
+                int a = random.Next() % 6;
 
-//}
+                if (a == 0)
+                {
+                    a = 12;
+                }
+
+                else if (a == 1) { a = 4; }
+                else if (a == 2) { a = 13; }
+                else { a = 12; }
+                Console.ForegroundColor = (ConsoleColor)a;
+                RenderDoor(x + floorLength - 5, y + 10, "-"); //floor
+            }
+           
+
+         
+            RenderDoor(x + HANDLE_X, HANDLE_Y, dash);
+
+            static void RenderDoor(int x, int y, string obj)
+            {
+              Console.SetCursorPosition(x, y);
+              Console.Write(obj);
+            }
+
+
+
+
+        }
+
+
+
+
+
+    }
+
+
+}
 
 
 
