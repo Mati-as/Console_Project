@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
+using System.Runtime.InteropServices.JavaScript;
 using System.Text;
 using System.Threading.Tasks;
 using PLEASE_DONT_OPEN_THE_CLOSED_DOOR;
@@ -26,7 +27,7 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
             const int FLOOR_LENGTH = 70;
 
             Console.ForegroundColor = (ConsoleColor)z;
-
+            
             RenderDoor(x, y, "----------");
             RenderDoor(x + 2, y + 4, "o");  //Handle of the door
 
@@ -55,14 +56,14 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
 
                 else if (a == 1) { a = 4; }
                 else if (a == 2) { a = 13; }
-                else { a = 12; }
+                else if (a == 3)  { a = 12; }
                 Console.ForegroundColor = (ConsoleColor)a;
                 RenderDoor(x + floorLength - 5, y + 10, "-"); //floor
             }
            
 
          
-            RenderDoor(x + HANDLE_X, HANDLE_Y, dash);
+           
 
             static void RenderDoor(int x, int y, string obj)
             {

@@ -12,15 +12,8 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
     {
         None,
         Left,
-        Right,
-        Up,
-        Down,
-        LeftForSeoncd,
-        RightForSeoncd,
-        UpForSeoncd,
-        DownForSecond,
-        Javelin1P,
-        Javelin2P
+        Right
+       
     }
 
 
@@ -28,10 +21,11 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
 
     class Sokoban
     {
+        //생성자 목록 
 
         //player constructor
         internal static Player player = new Player();
-
+        internal static Messages message = new Messages();
         //clock constructor
         internal static TimeTicking timeClock = new TimeTicking();
 
@@ -39,9 +33,11 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
         internal static PaintingDoor firstDoor = new PaintingDoor();
         internal static PaintingDoor secondDoor = new PaintingDoor();
         internal static PaintingDoor thirdDoor = new PaintingDoor();
+        internal static Murder ghost = new Murder();
 
 
 
+        public static int keyCount = 0;
 
 
         public static void Main()
@@ -57,7 +53,7 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
             Console.Clear(); // 출력된 내용을 지운다.
 
 
-
+            //걸린시간 (time
             //Door Dimension
 
 
@@ -72,6 +68,8 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
             const int GOAL_COUNT = 4;
             const int BOX_COUNT = GOAL_COUNT;
             const int WALL_COUNT = 4;
+            const int DOOR_COUNT = 3;
+
 
             const int MIN_X = 5;
             const int MAX_X = 70;
@@ -82,15 +80,16 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
             const int FIRST_PLAYER_INSTRUCTION_Y = 5;
 
 
-            const int PLAYER_START_POINT_X = 5;
+            const int PLAYER_START_POINT_X = 6;
             const int PLAYER_START_POINT_Y = 15;
             Random random = new Random();
 
             //문짝의 위치를 랜덤함수로 배치되게 하였다. 
-            int FIRST_DOOR_LOCATION = random.Next(5, 10);
+            int FIRST_DOOR_LOCATION = random.Next(5, 6);
             int SECOND_DOOR_LOCATION = random.Next(20, 24);
             int THIRD_DOOR_LOCATION = random.Next(32, 50);
 
+            bool playStart = false;
             player.X = PLAYER_START_POINT_X;
             player.Y = PLAYER_START_POINT_Y;
             player.PreX = PLAYER_START_POINT_X;
@@ -101,9 +100,17 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
 
 
 
+            DoorPoint[] doorPoint = new DoorPoint[]
+          {
+                new DoorPoint { X = FIRST_DOOR_LOCATION + 4,  Y = PLAYER_START_POINT_Y    , playerIsOnGoal = false},
+                new DoorPoint { X = SECOND_DOOR_LOCATION + 4, Y =PLAYER_START_POINT_Y     , playerIsOnGoal = false },
+                new DoorPoint { X = THIRD_DOOR_LOCATION + 4,  Y = PLAYER_START_POINT_Y    , playerIsOnGoal = false },
+
+          };
 
 
-
+            // 시간을 체크하기 위한 함수
+            int timePass = 0;
 
             int randomBoxNumX = 0;
             int randomBoxNumY = 0;
@@ -111,36 +118,27 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
 
 
             Box[] boxForFirst = new Box[BOX_COUNT] {
-                  new Box { X = random.Next(MIN_X + 2, MAX_X - 2)/2*2 , Y = random.Next(MIN_Y + 2, MAX_Y - 1), isOnGoal = false},
-                  new Box { X = random.Next(MIN_X + 2, MAX_X - 2)/2*2 , Y = random.Next(MIN_Y + 2, MAX_Y - 1), isOnGoal = false},
-                  new Box { X = random.Next(MIN_X + 2, MAX_X - 2)/2*2 , Y = random.Next(MIN_Y + 2, MAX_Y - 1), isOnGoal = false},
-                  new Box { X = random.Next(MIN_X + 2, MAX_X - 2)/2*2 , Y = random.Next(MIN_Y + 2, MAX_Y - 1) ,isOnGoal = false}
+                  new Box { X = random.Next(MIN_X + 2, MAX_X - 2)/2*2 , Y = random.Next(MIN_Y + 2, MAX_Y - 1),},
+                  new Box { X = random.Next(MIN_X + 2, MAX_X - 2)/2*2 , Y = random.Next(MIN_Y + 2, MAX_Y - 1),},
+                  new Box { X = random.Next(MIN_X + 2, MAX_X - 2)/2*2 , Y = random.Next(MIN_Y + 2, MAX_Y - 1),},
+                  new Box { X = random.Next(MIN_X + 2, MAX_X - 2)/2*2 , Y = random.Next(MIN_Y + 2, MAX_Y - 1) }
 
                };
 
 
+           
 
-
-            Wall[] wallFirst = new Wall[]
+            Keys[] KeyLocations = new Keys[]
             {
-                new Wall { X = MIN_X, Y = MIN_Y  },
-                new Wall { X = MIN_X, Y = MIN_Y  },
-                new Wall { X = MIN_X, Y = MIN_Y  },
-                new Wall { X = MIN_X, Y = MIN_Y  },
-                new Wall { X = MIN_X, Y = MIN_Y  },
+                new Keys { X = 5, Y = PLAYER_START_POINT_Y - 1},
+               
             };
 
 
 
 
 
-            Goal[] goalFirst = new Goal[]
-            {
-                new Goal { X = MIN_X + 8, Y = MIN_Y + 9 },
-                new Goal { X = MIN_X + 6, Y = MIN_Y + 6 },
-                new Goal { X = MIN_X + 4, Y = MIN_Y + 6 },
-                new Goal { X = MIN_X + 10,Y = MIN_Y + 8 }
-            };
+
 
             //// 박스 위치를 저장하기 위한 변수
             //int[] boxPositionsX = { 5, 7, 4 };
@@ -159,27 +157,12 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
 
             ConsoleKey key;
 
-           // intro
+            ////-----------------------------------------------------------------------------------  // intro
             while (true)
             {
                 //intro
-                const int START_OF_DOOR_X = 25;
-                const int START_OF_DOOR_Y = 3;
-                const int END_OF_DOOR_X = 35;
-                const int END_OF_DOOR_Y = 12;
-                const int SIZE_OF_DOOR = 10;
-                const int DOOR_HANDLE_X = START_OF_DOOR_X + 2;
-                const int DOOR_HANDLE_Y = START_OF_DOOR_Y + 5;
 
-                RenderObject(START_OF_DOOR_X, START_OF_DOOR_Y, "----------");
-
-                for (int i = START_OF_DOOR_Y; i < END_OF_DOOR_Y; i++)
-                {
-                    RenderObject(START_OF_DOOR_X, i, "I");
-                    RenderObject(START_OF_DOOR_X + SIZE_OF_DOOR, i, "I");
-                    RenderObject(DOOR_HANDLE_X, DOOR_HANDLE_Y, "o");
-                }
-                RenderObject(START_OF_DOOR_X - 10, END_OF_DOOR_Y, "-------------------------------");
+                firstDoor.PaintDoor(15, 5, 15);
 
                 Console.ForegroundColor = ConsoleColor.White;
                 Thread.Sleep(200);
@@ -205,69 +188,58 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
 
             Console.Clear();
 
-            //preclude
-            while (true)
-            {
+            ////preclude
+            //while (true)
+            //{
 
-                Console.ForegroundColor = ConsoleColor.DarkRed;
+            //    Console.ForegroundColor = ConsoleColor.DarkRed;
 
-                const int START_OF_DOOR_X = 25;
-                const int START_OF_DOOR_Y = 3;
-                const int END_OF_DOOR_X = 35;
-                const int END_OF_DOOR_Y = 12;
-                const int SIZE_OF_DOOR = 10;
-                const int DOOR_HANDLE_X = START_OF_DOOR_X + 2;
-                const int DOOR_HANDLE_Y = START_OF_DOOR_Y + 5;
+            //    const int START_OF_DOOR_X = 15;
+            //    const int START_OF_DOOR_Y = 5;
+            //    const int END_OF_DOOR_X = 35;
+            //    const int END_OF_DOOR_Y = 12;
+            //    const int SIZE_OF_DOOR = 10;
+            //    const int DOOR_HANDLE_X = START_OF_DOOR_X + 2;
+            //    const int DOOR_HANDLE_Y = START_OF_DOOR_Y + 5;
 
-                RenderObject(START_OF_DOOR_X, START_OF_DOOR_Y, "----------");
-
-                for (int i = START_OF_DOOR_Y; i < END_OF_DOOR_Y; i++)
-                {
-                    RenderObject(START_OF_DOOR_X, i, "I");
-                    RenderObject(START_OF_DOOR_X + SIZE_OF_DOOR, i, "I");
-                    RenderObject(DOOR_HANDLE_X, DOOR_HANDLE_Y, "o");
-                }
-                RenderObject(START_OF_DOOR_X - 10, END_OF_DOOR_Y, "-------------------------------");
+            //    firstDoor.PaintDoor(START_OF_DOOR_X, START_OF_DOOR_Y, 4);
 
 
-                Console.ForegroundColor = ConsoleColor.White;
-                RenderObject(15, 15, "And you know what?");
+            //    Console.ForegroundColor = ConsoleColor.White;
+            //    RenderObject(15, 15, "And you know what?");
 
-                Thread.Sleep(2100);
+            //    Thread.Sleep(2100);
 
-
-
-                RenderObject(13, 15, "You shouldn't have......");
-               
+            //    RenderObject(14, 15, "You shouldn't have......");
 
 
-                //MUsic play here.
-                //playerMusic.SoundPlayers(@"C:\\Users\\Mati Kong\\Documents\\Matias\\doonot_open_the_closed_door\\doonot_open_the_closed_door\\PLEASE_DONT_OPEN_THE_CLOSED_DOOR\\PLEASE_DONT_OPEN_THE_CLOSED_DOOR\\bin\\Debug\\net7.0\\Noisy.wav");
-                
-                for (int i = 0; i < 7; i++)
-                {
-                    playerMusic.SoundPlayers(@"C:\\Users\\Mati Kong\\Documents\\Matias\\doonot_open_the_closed_door\\doonot_open_the_closed_door\\PLEASE_DONT_OPEN_THE_CLOSED_DOOR\\PLEASE_DONT_OPEN_THE_CLOSED_DOOR\\bin\\Debug\\net7.0\\Growl.wav");
-                    Thread.Sleep(1000);
-                }
-                Thread.Sleep(30);
-                Console.ForegroundColor = ConsoleColor.DarkGray;
-                RenderObject(13, 15, " You wouldn't even know......");
-                Thread.Sleep(2100);
+            //    //MUsic play here.
+            //    //playerMusic.SoundPlayers(@"C:\\Users\\Mati Kong\\Documents\\Matias\\doonot_open_the_closed_door\\doonot_open_the_closed_door\\PLEASE_DONT_OPEN_THE_CLOSED_DOOR\\PLEASE_DONT_OPEN_THE_CLOSED_DOOR\\bin\\Debug\\net7.0\\Noisy.wav");
 
-                for (int i = 0; i < 30; i++)
-                {
-                    Console.ForegroundColor = ConsoleColor.DarkRed;
-                    RenderObject(10, i, " ----------------------------");
-                    Console.ForegroundColor = (ConsoleColor)(8);
-                    Thread.Sleep(50);
-                }
-                Console.Clear();
-                break;
+            //    for (int i = 0; i < 6; i++)
+            //    {
+            //        playerMusic.SoundPlayers(@"C:\\Users\\Mati Kong\\Documents\\Matias\\doonot_open_the_closed_door\\doonot_open_the_closed_door\\PLEASE_DONT_OPEN_THE_CLOSED_DOOR\\PLEASE_DONT_OPEN_THE_CLOSED_DOOR\\bin\\Debug\\net7.0\\Growl.wav");
+            //        Thread.Sleep(500);
+            //    }
+            //    Thread.Sleep(30);
+            //    Console.ForegroundColor = ConsoleColor.DarkGray;
+            //    RenderObject(13, 15, " You wouldn't even know......");
+            //    Thread.Sleep(2100);
+
+            //    for (int i = 0; i < 30; i++)
+            //    {
+            //        Console.ForegroundColor = ConsoleColor.DarkRed;
+            //        RenderObject(15, i, " ----------------------------");
+            //        Console.ForegroundColor = (ConsoleColor)(8);
+            //        Thread.Sleep(50);
+            //    }
+            //    Console.Clear();
+            //    break;
+
+            //}
 
 
-
-            }
-
+            // --------------------------------------------------------------------------------------게임화면
             while (true)
             {
 
@@ -276,27 +248,39 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
 
                 if (Console.KeyAvailable)
                 {
-
+                    Console.ForegroundColor = ConsoleColor.Black;
                     key = Console.ReadKey().Key;
                     Update(key);
 
                 }
 
 
-
-
             }
+            //----------------------------------------------------------------------------------------구현부분          
 
-
-
-             
             // 프레임을 그립니다.
             void Render()
             {
+                RenderObject(1, 18, "Key to escape :");
+                RenderNumber(15, 18, keyCount);
+                firstDoor.PaintDoor(FIRST_DOOR_LOCATION, 5, 12); //argument는 Startpoint
+                secondDoor.PaintDoor(SECOND_DOOR_LOCATION, 5, 5);
+                thirdDoor.PaintDoor(THIRD_DOOR_LOCATION, 5, 4);
 
-               
+                RenderObject(KeyLocations[0].X , KeyLocations[0].Y ,"K");
+
                 //RenderColock
                 timeClock.RenderClock();
+
+                if (player.X == player.PreX)
+                {
+
+                }
+                else
+                {
+                    RenderObject(player.PreX, player.PreY - 2, " ");
+                    RenderObject(player.PreX, player.PreY - 1, " ");
+                }
 
 
                 Random random1 = new Random();
@@ -306,20 +290,49 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
 
 
 
-                RenderObject(player.X, player.Y - 2, "@");
-                RenderObject(player.X, player.Y - 1, ".");
+                for (int i = 0; i < 1; ++i)
+                {
+                    string playerInstruction = playStart ? "" : " \n\n\n AD to move";
+                    RenderObject(player.X, PLAYER_START_POINT_Y - 2, playerInstruction);
+
+                    if (doorPoint[i].playerIsOnGoal == true || doorPoint[i + 1].playerIsOnGoal == true || doorPoint[i + 2].playerIsOnGoal == true)
+                    {
+                        string playerShape = "!";
+                        RenderObject(player.X, PLAYER_START_POINT_Y - 2, playerShape);
+                    }
+
+                    else
+                    {
+                        string playerShape = "@";
+                        RenderObject(player.X, PLAYER_START_POINT_Y - 2, playerShape);
+                    }
 
 
-                if (player.X != player.PreX)
-                    RenderObject(player.PreX, player.PreY - 2, " ");
-                RenderObject(player.PreX, player.PreY - 1, " ");
+
+                    RenderObject(player.X, player.Y - 1, "U");
+                    if (doorPoint[i].playerIsOnGoal == true || doorPoint[i + 1].playerIsOnGoal == true || doorPoint[i + 2].playerIsOnGoal == true)
+                    {
+                        a = random1.Next() % 3;
+                        Console.ForegroundColor = ConsoleColor.White;
+
+                        string spaceInstruction = "\n\n\n SPACE to open";
+                        RenderObject(player.X, PLAYER_START_POINT_Y - 2, spaceInstruction);
+                    }
+                    else if (doorPoint[i].playerIsOnGoal == false) //출력안하는걸 검은색으로 대체 
+                    {
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        string spaceInstruction = "\n\n\n SPACE to open";
+                        RenderObject(player.X, PLAYER_START_POINT_Y - 2, spaceInstruction);
+
+
+                    }
+
+                    a = random1.Next() % 3;
+                    Console.ForegroundColor = (ConsoleColor)a;
 
 
 
-
-                firstDoor.PaintDoor(FIRST_DOOR_LOCATION, 5,2); //argument는 Startpoint
-                secondDoor.PaintDoor(SECOND_DOOR_LOCATION, 5,1);
-                thirdDoor.PaintDoor(THIRD_DOOR_LOCATION, 5,3);
+                }
 
 
 
@@ -337,6 +350,13 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
                 Console.Write(obj);
             }
 
+            void RenderNumber(int x, int y, int number)
+            {
+                Console.SetCursorPosition(x, y);
+                Console.Write(number);
+            }
+
+
 
 
 
@@ -349,14 +369,9 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
 
 
                 /// 1P 공백함수 위치 조건문
-                for (int i = 0; i < GOAL_COUNT; i++)
+                for (int i = 0; i < 3; i++)
                 {
-                    if (player.X != goalFirst[i].X
-                           && player.Y != goalFirst[i].Y
-                           && player.X != boxForFirst[i].X
-                           && player.Y != boxForFirst[i].Y
-
-                       )
+            
 
                     {
                         player.PreX = preX;
@@ -364,88 +379,32 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
                     }
                 }
                 // 플레이어와 벽의 충돌 처리
-                for (int wallId = 0; wallId < WALL_COUNT; ++wallId)
-                {
-                    if (false == IsCollided(player.X, player.Y, wallFirst[wallId].X, wallFirst[wallId].Y))
-                    {
-                        continue;
-                    }
-
-                    switch (player.MoveDirection)
-                    {
-                        case Direction.Left:
-
-                            player.X = wallFirst[wallId].X + 2;
-
-                            break;
-                        case Direction.Right:
-
-                            player.X = wallFirst[wallId].X - 2;
-                            break;
-                        case Direction.Up:
-
-                            player.Y = wallFirst[wallId].Y + 1;
-                            break;
-                        case Direction.Down:
-
-                            player.Y = wallFirst[wallId].Y - 1;
-                            break;
-
-
-                        default:
-
-                            return;
-                    }
-
-
-                    break;
-                }
-
-
-
-
-                //void ExitWithError(string errorMessage)
-                //{
-                //    Console.Clear();
-                //    Console.WriteLine(errorMessage);
-                //}
-
 
                 // 박스 이동 처리
                 // 플레이어가 박스를 밀었을 때라는 게 무엇을 의미하는가?
                 // => 플레이어가 이동했는데 플레이어의 위치와 박스 위치가 겹쳤다.
-                for (int i = 0; i < BOX_COUNT; ++i)
-                {
-                    if (false == IsCollided(player.X, player.Y, boxForFirst[i].X, boxForFirst[i].Y))
-                    {
-                        continue;
-                    }
-
-
+               
+                    if (false == IsCollided(player.X, player.Y, KeyLocations[0].X, KeyLocations[0].Y))
+                 {
                     switch (player.MoveDirection)
                     {
                         case Direction.Left:
-                            boxForFirst[i].X = Math.Clamp(boxForFirst[i].X - 2, MIN_X, MAX_X);
-                            player.X = boxForFirst[i].X + 2;
-                            player.PushedBoxIndex = i;
+                            //boxForFirst[i].X = Math.Clamp(boxForFirst[i].X - 2, MIN_X, MAX_X);
+                            //player.X = boxForFirst[i].X + 2;
+                            //player.PushedBoxIndex = i;
+
+
+                         
+
                             break;
                         case Direction.Right:
-                            boxForFirst[i].X = Math.Clamp(boxForFirst[i].X + 2, MIN_X, MAX_X);
-                            player.X = boxForFirst[i].X - 2;
-                            player.PushedBoxIndex = i;
-                            break;
-                        case Direction.Up:
-                            boxForFirst[i].Y = Math.Clamp(boxForFirst[i].Y - 1, MIN_Y, MAX_Y);
-                            player.Y = boxForFirst[i].Y + 1;
-                            player.PushedBoxIndex = i;
+                            //boxForFirst[i].X = Math.Clamp(boxForFirst[i].X + 2, MIN_X, MAX_X);
+                            //player.X = boxForFirst[i].X + 2;
+                            //player.PushedBoxIndex = i;
+                           
+
 
                             break;
-                        case Direction.Down:
-                            boxForFirst[i].Y = Math.Clamp(boxForFirst[i].Y + 1, MIN_Y, MAX_Y);
-                            player.Y = boxForFirst[i].Y - 1;
-                            player.PushedBoxIndex = i;
-                            break;
-
 
                         default:
                             Console.Clear();
@@ -453,155 +412,103 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
 
                             return;
                     }
+                }
 
+
+                  
+
+                
+
+                for (int DoorID = 0; DoorID < DOOR_COUNT; ++DoorID) // 모든 골 지점에 대해서
+                {
+                    // 플레이어가 도어입구에 있는지 확인한다.
+                    doorPoint[DoorID].playerIsOnGoal = false; // 없을 가능성이 높기 때문에 false로 초기화 한다.
+
+
+                    for (int goalId = 0; goalId < GOAL_COUNT; ++goalId) // 모든 박스에 대해서
+                    {
+                        // 박스가 골 지점 위에 있는지 확인한다.
+                        if (player.X == doorPoint[DoorID].X)
+                        {
+
+
+                            doorPoint[DoorID].playerIsOnGoal = true; // 박스가 골 위에 있다는 사실을 저장해둔다.
+
+                            break;
+                        }
+                    }
                 }
 
 
 
+                // 플레이어를 이동시킨다.
+                // 실제메모리는 힙 , 메모리는 스택
+                void MovePlayer(ConsoleKey key, Player playerFirst)
+                {//플레이어 이동함수
 
-                // 박스와 벽의 충돌 처리
-                for (int wallId = 0; wallId < WALL_COUNT; ++wallId)
-                {
-                    if (false == IsCollided(boxForFirst[player.PushedBoxIndex].X, boxForFirst[player.PushedBoxIndex].Y, wallFirst[wallId].X, wallFirst[wallId].Y))
+                    if (key == ConsoleKey.A)
                     {
-                        continue;
+
+                        playerFirst.X = Math.Max(MIN_X, playerFirst.X - 1);
+                        playerFirst.MoveDirection = Direction.Left;
+                        playStart = true;
                     }
 
-                    switch (player.MoveDirection)
+                    if (key == ConsoleKey.D)
                     {
-                        case Direction.Left:
-                            boxForFirst[player.PushedBoxIndex].X = wallFirst[wallId].X + 2;
-                            player.X = boxForFirst[player.PushedBoxIndex].X + 2;
-                            break;
-                        case Direction.Right:
-                            boxForFirst[player.PushedBoxIndex].X = wallFirst[wallId].X - 2;
-                            player.X = boxForFirst[player.PushedBoxIndex].X - 2;
-                            break;
-                        case Direction.Up:
-                            boxForFirst[player.PushedBoxIndex].Y = wallFirst[wallId].Y + 1;
-                            player.Y = boxForFirst[player.PushedBoxIndex].Y + 1;
-                            break;
-                        case Direction.Down:
-                            boxForFirst[player.PushedBoxIndex].Y = wallFirst[wallId].Y - 1;
-                            player.Y = boxForFirst[player.PushedBoxIndex].Y - 1;
-                            break;
 
-                        //두번쨰 캐릭터 처리
-
-
-                        default:
+                        playerFirst.X = Math.Min(playerFirst.X + 1, MAX_X);
+                        playerFirst.MoveDirection = Direction.Right;
+                        playStart = true;
+                    }
+                    for(int i =0 ; i < DOOR_COUNT;i++)
+                    {
+                        if (key == ConsoleKey.Spacebar || doorPoint[i].playerIsOnGoal == true)
+                        {
+                            int a = random.Next(0,15);
+                            Console.BackgroundColor = (ConsoleColor)a;
+                            Render();
                             Console.Clear();
-                            Console.WriteLine($"[Error] 플레이어 이동 방향 데이터가 오류입니다. : {player.MoveDirection}");
 
-                            return;
+                            FIRST_DOOR_LOCATION = random.Next(5, 30);
+                            SECOND_DOOR_LOCATION = random.Next(30, 50);
+                            THIRD_DOOR_LOCATION = SECOND_DOOR_LOCATION;
+                            
+                           
+
+                        }
                     }
-
-                    break;
-                }
-
-
-
-
-                // 박스끼리 충돌 처리
-                for (int collidedBoxId = 0; collidedBoxId < BOX_COUNT; ++collidedBoxId)
-                {
-                    // 같은 박스라면 처리할 필요가 X
-                    if (Sokoban.player.PushedBoxIndex == collidedBoxId)
-                    {
-                        continue;
-                    }
-                    if (false == IsCollided(boxForFirst[Sokoban.player.PushedBoxIndex].X, boxForFirst[Sokoban.player.PushedBoxIndex].Y, boxForFirst[collidedBoxId].X, boxForFirst[collidedBoxId].Y))
-                    {
-                        continue;
-                    }
-
-                    switch (player.MoveDirection)
-                    {
-                        case Direction.Left:
-                            boxForFirst[player.PushedBoxIndex].X = boxForFirst[collidedBoxId].X + 2;
-                            player.X = boxForFirst[player.PushedBoxIndex].X + 2;
-
-                            break;
-                        case Direction.Right:
-                            boxForFirst[player.PushedBoxIndex].X = boxForFirst[collidedBoxId].X - 2;
-                            player.X = boxForFirst[player.PushedBoxIndex].X - 2;
-
-                            break;
-                        case Direction.Up:
-                            boxForFirst[player.PushedBoxIndex].Y = boxForFirst[collidedBoxId].Y + 1;
-                            player.Y = boxForFirst[player.PushedBoxIndex].Y + 1;
-
-                            break;
-
-                        case Direction.Down:
-                            boxForFirst[player.PushedBoxIndex].Y = boxForFirst[collidedBoxId].Y - 1;
-                            player.Y = boxForFirst[player.PushedBoxIndex].Y - 1;
-
-
-
-
-                            break;
-                        default:
-                            Console.Clear();
-                            Console.WriteLine($"[Error] 플레이어 이동 방향 데이터가 오류입니다. : {player.MoveDirection}");
-
-                            return;
-                    }
-
-                    break;
+                  
+                    
                 }
 
 
 
 
             }
-
-
-
-
-
-            // 플레이어를 이동시킨다.
-            // 실제메모리는 힙 , 메모리는 스택
-            void MovePlayer(ConsoleKey key, Player playerFirst)
-            {//플레이어 이동함수
-
-                if (key == ConsoleKey.A)
-                {
-
-                    playerFirst.X = Math.Max(MIN_X, playerFirst.X - 2);
-                    playerFirst.MoveDirection = Direction.Left;
-                }
-
-                if (key == ConsoleKey.D)
-                {
-
-                    playerFirst.X = Math.Min(playerFirst.X + 2, MAX_X);
-                    playerFirst.MoveDirection = Direction.Right;
-                }
-
-            
-            }
-
-
-
-
-        }
-        // 두 물체가 충돌했는지 판별합니다.
-        private static bool IsCollided(int x1, int y1, int x2, int y2)
-        {
-            if (x1 == x2 && y1 == y2)
+            // 두 물체가 충돌했는지 판별합니다.
+              bool IsCollided(int x1, int y1, int x2, int y2 )
             {
-                return true;
-            }
-            else
-            {
-                return false;
+                if (x1 == x2)
+                {
+                    keyCount++;
+                    Console.Clear();
+                    message.PrintMessage();
+                    Random random = new Random();
+                    KeyLocations[0].X = random.Next(5, 50);
+                    return true;
+                  
+                }
+                else
+                {
+                    return false;
+                }
+               
             }
         }
+
+
     }
-
-
-
 
 }
 
