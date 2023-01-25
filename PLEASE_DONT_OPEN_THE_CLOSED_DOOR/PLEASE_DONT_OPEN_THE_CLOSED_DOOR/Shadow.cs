@@ -43,24 +43,76 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
                 }
                 Console.SetCursorPosition(0,0);
 
+               int k = random.Next(3);
+                  if(k % 2 == 0)
+                {
+
+                    Console.Write(a); Console.WriteLine("       ~    ~.......");
+                    Console.Write(a); Console.WriteLine("           .........");
+                    Console.Write(a); Console.WriteLine("       ~    ~.......");
+                    Console.Write(a); Console.WriteLine("      !      *......");
+                    Console.Write(a); Console.WriteLine("     ,        -.....");
+                    Console.Write(a); Console.WriteLine("     ~        :.....");
+                    Console.Write(a); Console.WriteLine("     : *:  :* ~     ");
+                    Console.Write(a); Console.WriteLine("...... ~=,,=~       ");
+                    Console.Write(a); Console.WriteLine("......:  ..  :      ");
+                    Console.Write(a); Console.WriteLine(".......:!;;!:       ");
+                    Console.Write(a); Console.WriteLine(".......-,-,.,       ");
+                    Console.Write(a); Console.WriteLine("          ..        ");
+                }
+
+                else
+                {
+
+                    Console.WriteLine(" . . . . .     . .  .       . . .   . . . . . . . . . . .      ");
+                    Console.WriteLine(". . . . . .     . .      -.~  .;, -. . . . . . . . . . . .     ");
+                    Console.WriteLine(" . . . . .     . .  .  ,-          ,, . . . . . . . . . .      ");
+                    Console.WriteLine(". . . . . .     . .  -,              : . . . . . . . . . .     ");
+                    Console.WriteLine("                    ~ ,                -                       ");
+                    Console.WriteLine("                   ,. -..                                      ");
+                    Console.WriteLine("                    ;                    ,                     ");
+                    Console.WriteLine("                  !-                                           ");
+                    Console.WriteLine("                 . .                      .                    ");
+                    Console.WriteLine("                 *                        =                    ");
+                    Console.WriteLine("                                                               ");
+                    Console.WriteLine("                                                               ");
+                    Console.WriteLine(". .   . . .     ,  .                         . . .     . .     ");
+                    Console.WriteLine(" .   . . .         *~   . . .     . .                          ");
+                    Console.WriteLine(" . . . . .                              ,  .. . .   . . .      ");
+                    Console.WriteLine(". . . . . .     .      .  .      ;     .   . . . . . . . .     ");
+                    Console.WriteLine(" . . . . .     ..-.    ,   =       =    . . . . . . .          ");
+                    Console.WriteLine(". . . . . .     .   -   ; ; ; .  .  ,    .  !. . . . . . . .   ");
+                    Console.WriteLine(" . . . . .     .    ,.-        :,    ;    # . . . . . . .      ");
+                    Console.WriteLine(". . . . . .     .  $ .     . #  ,      .  $. . . . . . . .     ");
+                    Console.WriteLine(" . . . . .     . .  ,.      .         . - . . . . . . . .      ");
+                    Console.WriteLine(". . . . . .     .  . -     . @@ ,     - .  . . . . . . . .     ");
+                    Console.WriteLine(" . . . . .       .- -~ # : . ;   ,  $. . . . . . . .           ");
+                    Console.WriteLine(". . . . . .     .    *   ,  .     : $!   = . . . . . . . .     ");
+                    Console.WriteLine(" . . . . .     . .    :    ,-  .          . . . . . . . .      ");
+                    Console.WriteLine(". . . . . .     .          .         -   , . . . . . . . .     ");
+                    Console.WriteLine(" . . . . .     . .         $=,:-        . . . . . . . . .      ");
+                    Console.WriteLine(". . . . . .     . .  *; ;  , = .,     -!.. . . . . . . . .     ");
+                    Console.WriteLine(" . . . . .     . .  . . .    ,.    ::. ;. . . . . . . . .      ");
+                    Console.WriteLine(". . . . . .     . . ! = ~,         -.... . . . . . . . . .     ");
+                    Console.WriteLine(" . . . . .     . .  . .-~**      ,; .   . . . . . . . . .      ");
+                    Console.WriteLine("                      ~,,   :.--~ ,                            ");
+                    Console.WriteLine("                      .~~: ,   ,; -:-:                         ");
+                    Console.WriteLine("                    ;  ,,-! . -:. ..-                          ");
+                    Console.WriteLine("                    ;  ,    -  ,-:,.~-                         ");
+                    Console.WriteLine("                     .     ,       .  !                        ");
+                    Console.WriteLine("                      ,- ,           :                         ");
+                    Console.WriteLine("                       -~- -,                                  ");
+                    Console.WriteLine("                        .,       ,~.                           ");
+                    Console.WriteLine("                          ,~ .~:*.                             ");
+                    Console.WriteLine(". .   . . .       .          .       . . .   . . .   . . .     ");
+                    Console.WriteLine("                                                               ");
+                    Console.WriteLine("                                                               ");
+                }
 
 
-      
 
 
-                Console.Write(a); Console.WriteLine("       ~    ~.......");
-                Console.Write(a); Console.WriteLine("           .........");
-                Console.Write(a); Console.WriteLine("       ~    ~.......");
-                Console.Write(a); Console.WriteLine("      !      *......");
-                Console.Write(a); Console.WriteLine("     ,        -.....");
-                Console.Write(a); Console.WriteLine("     ~        :.....");
-                Console.Write(a); Console.WriteLine("     : *:  :* ~     ");
-                Console.Write(a); Console.WriteLine("...... ~=,,=~       ");
-                Console.Write(a); Console.WriteLine("......:  ..  :      ");
-                Console.Write(a); Console.WriteLine(".......:!;;!:       ");
-                Console.Write(a); Console.WriteLine(".......-,-,.,       ");
-                Console.Write(a); Console.WriteLine("          ..        ");
-
+                
                 a = string.Empty;
             }
 

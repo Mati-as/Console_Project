@@ -14,9 +14,13 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
             const int MESSAGE_Y = 17;
             RenderMessage(MESSAGE_X, MESSAGE_Y);
 
-             void RenderMessage(int x, int y)
+            const int RUN_MESSAGE_Y = 17;
+
+            RenderMessage(MESSAGE_X, MESSAGE_Y);
+
+            void RenderMessage(int x, int y)
             {
-                Random random= new Random();
+                Random random = new Random();
                 int timePass = 0;
                 int timePassed = 0;
                 int timeAtPresent = 0;
@@ -31,12 +35,12 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
                 {
                     Console.ForegroundColor = ConsoleColor.DarkGray;
                 }
-                
+
                 Console.SetCursorPosition(MESSAGE_X, MESSAGE_Y);
                 Console.Write("You've got a key ");
-                
+
                 Console.Write("but you don't think it's over,right?");
-                
+
 
 
                 timePass++;
@@ -45,6 +49,6 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
             }
 
         }
-    }
 
+    }
 }

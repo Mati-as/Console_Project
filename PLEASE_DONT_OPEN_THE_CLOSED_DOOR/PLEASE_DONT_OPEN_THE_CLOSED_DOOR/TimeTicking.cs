@@ -24,9 +24,20 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
         int CLOCK_START_X= 9;
         int CLOCK_START_Y = 1;
 
-        public int timePass = 0;
+        public double timePass = 0;
         public int timePassed = 0;
         public int timePassedDivided5 = 0;
+        public bool runTrigger = false;
+        public int murderSpeed = 0;
+        public int timebooster = 0;
+
+        public int murderAtPresent = 70;
+
+        Random random = new Random();
+        public int randomMoveMin = 30;
+        public int randomMoveMax = 45;
+        public int randomMoveMin2 = 10;
+        public int randomMoveMax2 = 15;
 
         enum ColorList
         {
@@ -36,7 +47,7 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
         };
         internal static Murder ghost = new Murder();
         internal static MessageWhatchOut messageW = new MessageWhatchOut();
-        internal static RenderMurder murder = new RenderMurder();
+        public RenderMurder murder = new RenderMurder();
         public void RenderClock()
         {
            
@@ -44,18 +55,25 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
               //Handle of the door
               //floor
              
-             RenderClock(CLOCK_START_X - 2, CLOCK_START_Y , 60 - timePass);
+             RenderClock(CLOCK_START_X - 2, CLOCK_START_Y , 60 - (int)timePass);
+            timePassed++;
 
             timePass = timePassed / 90; //1 second
             timePassedDivided5 = timePassed / 5;
-            timePassed++;
 
-            Random random = new Random();
-            int k = random.Next(200,202);
+            //MoveMurder--------------------------------------
 
 
 
             
+
+
+            int k = random.Next(200,202);
+
+
+            murderSpeed = timePassed / 160;
+            timebooster = timePassed / 150;
+
             int a = random.Next() % 6;
 
             if (a == 0)
@@ -68,52 +86,71 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
             else { a = 12; }
             Console.ForegroundColor = (ConsoleColor)a;
 
+           
+
 
             if (timePass % 10 > 1 && timePass % 10 <= 2)
             {
-                RenderMessage(CLOCK_START_X + 5, CLOCK_START_Y, "Hey.... You're running out of time.");
-               
+                RenderMessage(CLOCK_START_X + 5, CLOCK_START_Y - 1, "Hey.... You're running out of time.");
+                RenderMessage(CLOCK_START_X + 5, CLOCK_START_Y, "              ");
 
 
             }
 
 
-            else if (timePass % 10 > 3 && timePass % 10 <= 4)
-            {
-               
-                RenderMessage(CLOCK_START_X + 5, CLOCK_START_Y, "And see what is coming behind you.");
-               
-            }
-
-
-            if (timePass % 10 > 4 && timePass % 10 <= 5)
+            else if (timePassed % 100 > 20 && timePassed % 100 <= 30)
             {
 
-
-                RenderMessage(CLOCK_START_X + 5, CLOCK_START_Y , "Watch Out!");
-                Console.Clear();
+                RenderMessage(CLOCK_START_X + 5, CLOCK_START_Y - 1, "And see what is coming behind you.");
+                RenderMessage(CLOCK_START_X + 5, CLOCK_START_Y, "              ");
 
             }
+
+            else if (timePassed % 100 > randomMoveMin && timePassed % 100 <= randomMoveMax)
+            {
+               
+                RenderMessage(CLOCK_START_X + 5, CLOCK_START_Y, "                                     ");
+                RenderMessage(CLOCK_START_X + 5, CLOCK_START_Y, "Watch Out!");
+                murder.MoveMurder();
+                murderAtPresent = murder.murder_X;
+            }
+
+            else if (timePassed % 100 > 90 && timePassed % 100 <= 100)
+            {
+
+                RenderMessage(CLOCK_START_X + 5, CLOCK_START_Y, "                                     ");
+                RenderMessage(CLOCK_START_X + 5, CLOCK_START_Y, "Watch Out!");
+                murder.MoveBackMurder();
+                murderAtPresent = murder.murder_X;
+            }
+
+
 
 
             if ( timePassed%1000 >= 480 && timePassed%1000 <= 490)
             {
                 int r = random.Next(20 ,70 );
                
-                ghost.CreatGhost(0,20,r);
+                ghost.CreatGhost(0,19,r);
                 Console.Clear();
-                
-            }
                
-           
+            }
+
+
+
+
+
             else if (timePassed / 120 == 10)
             {
                 RenderMessage(CLOCK_START_X + 5, CLOCK_START_Y, "                                       ");
             }
 
+            
+             murder.crawlMurder();
 
-            murder.crawlMurder(timePass,15);
-    
+            murder.crawlBackMurder();
+
+
             void RenderClock(int x, int y, int obj)
            {
             Console.SetCursorPosition(x, y);
@@ -128,6 +165,24 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
 
         }
 
-       
+        public void RenderRunMessage(int x)
+        {
+
+            Random random = new Random();
+            int n = random.Next(2);
+            if (n == 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+            }
+
+
+            Console.SetCursorPosition(x-1, 12);
+            Console.Write("RUN!!!");
+           
+        }
     }
 }

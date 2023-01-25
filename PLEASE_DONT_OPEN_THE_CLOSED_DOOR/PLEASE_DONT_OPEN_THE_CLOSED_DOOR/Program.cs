@@ -3,7 +3,9 @@ using System.Numerics;
 using System.Security.Cryptography.X509Certificates;
 using System.Media;
 using System.Windows.Input;
-
+using System.Reflection;
+using System.Reflection.Emit;
+using System.Windows;
 
 namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
 {//namespace 선언해야 다른 네임스페이스에서도 불러올 수 있다
@@ -13,7 +15,7 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
         None,
         Left,
         Right
-       
+
     }
 
 
@@ -34,7 +36,7 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
         internal static PaintingDoor secondDoor = new PaintingDoor();
         internal static PaintingDoor thirdDoor = new PaintingDoor();
         internal static Murder ghost = new Murder();
-
+        //internal static RenderMurder murder = new RenderMurder();
 
 
         public static int keyCount = 0;
@@ -42,6 +44,8 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
 
         public static void Main()
         {
+
+            Console.SetWindowSize(200, 200);
 
             PlayMusic playerMusic = new PlayMusic();
             // 초기 세팅
@@ -111,7 +115,7 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
 
             // 시간을 체크하기 위한 함수
             int timePass = 0;
-
+            int b = 1;
             int randomBoxNumX = 0;
             int randomBoxNumY = 0;
 
@@ -126,12 +130,12 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
                };
 
 
-           
+
 
             Keys[] KeyLocations = new Keys[]
             {
                 new Keys { X = 5, Y = PLAYER_START_POINT_Y - 1},
-               
+
             };
 
 
@@ -158,35 +162,35 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
             ConsoleKey key;
 
             ////-----------------------------------------------------------------------------------  // intro
-            while (true)
-            {
-                //intro
+            //while (true)
+            //{
+            //    //intro
 
-                firstDoor.PaintDoor(15, 5, 15);
+            //    firstDoor.PaintDoor(15, 5, 15);
 
-                Console.ForegroundColor = ConsoleColor.White;
-                Thread.Sleep(200);
-                RenderObject(15, 15, "Hey, do you want to open this door?");
-                Thread.Sleep(2100);
-                RenderObject(15, 16, "If so, say whatever if you want to.");
-                Thread.Sleep(2500);
-                Console.ForegroundColor = ConsoleColor.DarkGray;
-                RenderObject(15, 18, "(> Press Any Key)");
+            //    Console.ForegroundColor = ConsoleColor.White;
+            //    Thread.Sleep(200);
+            //    RenderObject(15, 15, "Hey, do you want to open this door?");
+            //    Thread.Sleep(2100);
+            //    RenderObject(15, 16, "If so, say whatever if you want to.");
+            //    Thread.Sleep(2500);
+            //    Console.ForegroundColor = ConsoleColor.DarkGray;
+            //    RenderObject(15, 18, "(> Press Any Key)");
 
-                RenderObject(0, 0, "");
-                Console.BackgroundColor = ConsoleColor.Black;
-                Console.ForegroundColor = ConsoleColor.Black;
+            //    RenderObject(0, 0, "");
+            //    Console.BackgroundColor = ConsoleColor.Black;
+            //    Console.ForegroundColor = ConsoleColor.Black;
 
-                key = Console.ReadKey().Key;
+            //    key = Console.ReadKey().Key;
 
-                if (Console.KeyAvailable)
-                {
-                    Console.Clear();
-                    break;
-                }
-            }
+            //    if (Console.KeyAvailable)
+            //    {
+            //        Console.Clear();
+            //        break;
+            //    }
+            //}
 
-            Console.Clear();
+            //Console.Clear();
 
             ////preclude
             //while (true)
@@ -242,274 +246,376 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
             // --------------------------------------------------------------------------------------게임화면
             while (true)
             {
-
+                Thread.Sleep(15);
                 Render();
 
 
                 if (Console.KeyAvailable)
                 {
+
+                    //-----------------------------------------------------------------------------input
+                    Console.SetCursorPosition(0, 50);
                     Console.ForegroundColor = ConsoleColor.Black;
                     key = Console.ReadKey().Key;
                     Update(key);
 
-                }
-
-
-            }
-            //----------------------------------------------------------------------------------------구현부분          
-
-            // 프레임을 그립니다.
-            void Render()
-            {
-                RenderObject(1, 18, "Key to escape :");
-                RenderNumber(15, 18, keyCount);
-                firstDoor.PaintDoor(FIRST_DOOR_LOCATION, 5, 12); //argument는 Startpoint
-                secondDoor.PaintDoor(SECOND_DOOR_LOCATION, 5, 5);
-                thirdDoor.PaintDoor(THIRD_DOOR_LOCATION, 5, 4);
-
-                RenderObject(KeyLocations[0].X , KeyLocations[0].Y ,"K");
-
-                //RenderColock
-                timeClock.RenderClock();
-
-                if (player.X == player.PreX)
-                {
-
-                }
-                else
-                {
-                    RenderObject(player.PreX, player.PreY - 2, " ");
-                    RenderObject(player.PreX, player.PreY - 1, " ");
-                }
-
-
-                Random random1 = new Random();
-                int a = random1.Next() % 3;
-                Console.ForegroundColor = (ConsoleColor)a;
-
-
-
-
-                for (int i = 0; i < 1; ++i)
-                {
-                    string playerInstruction = playStart ? "" : " \n\n\n AD to move";
-                    RenderObject(player.X, PLAYER_START_POINT_Y - 2, playerInstruction);
-
-                    if (doorPoint[i].playerIsOnGoal == true || doorPoint[i + 1].playerIsOnGoal == true || doorPoint[i + 2].playerIsOnGoal == true)
+                    if (timeClock.randomMoveMax > 90)
                     {
-                        string playerShape = "!";
-                        RenderObject(player.X, PLAYER_START_POINT_Y - 2, playerShape);
+                        timeClock.RenderRunMessage(player.X);
+
                     }
 
+
+                    if (player.X >= timeClock.murderAtPresent)
+                    {
+
+                        Console.Clear();
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        string a = "DEAD DEAD DEAD";
+
+                        for (int i = 0; i < 100; i++)
+                        {
+
+
+                            RenderObject(1, i + 15, a);
+                            RenderObject(15, i, a);
+
+
+                        }
+                        Thread.Sleep(1500);
+                        return;
+
+
+
+                    }
+                    if (keyCount >= 15)
+                    {
+
+                        Console.Clear();
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        string a = "Buen trabajo ^^";
+
+                        for (int i = 0; i < 100; i++)
+                        {
+
+
+                            RenderObject(1, i + 15, a);
+                            RenderObject(15, i, a);
+
+
+                        }
+                        Thread.Sleep(1500);
+                        return;
+
+                    }
+
+                }
+                //----------------------------------------------------------------------------------------구현부분          
+
+                // 프레임을 그립니다.
+                void Render()
+                {
+                    //Instruction
+                    RenderObject(70, 8, "A,D Key to Move");
+                    RenderObject(70, 9, "O : Enterance");
+                    RenderObject(70, 10, "K : KEY");
+                    
+
+                    RenderObject(1, 18, "Key to escape :");
+                    RenderNumber(15, 18, keyCount);
+
+                    firstDoor.PaintDoor(FIRST_DOOR_LOCATION, 5, 12); //argument는 Startpoint
+                    secondDoor.PaintDoor(SECOND_DOOR_LOCATION, 5, 5);
+                    thirdDoor.PaintDoor(THIRD_DOOR_LOCATION, 5, 4);
+                    
+
+                    firstDoor.Renderflooer();
+                    
+                    RenderObject(KeyLocations[0].X, KeyLocations[0].Y, "K");
+
+                    //RenderColock
+                    timeClock.RenderClock();
+
+
+                    if (player.X == player.PreX)
+                    {
+
+                    }
                     else
                     {
-                        string playerShape = "@";
-                        RenderObject(player.X, PLAYER_START_POINT_Y - 2, playerShape);
+                        RenderObject(player.PreX, player.PreY - 2, " ");
+                        RenderObject(player.PreX, player.PreY - 1, " ");
                     }
 
 
-
-                    RenderObject(player.X, player.Y - 1, "U");
-                    if (doorPoint[i].playerIsOnGoal == true || doorPoint[i + 1].playerIsOnGoal == true || doorPoint[i + 2].playerIsOnGoal == true)
-                    {
-                        a = random1.Next() % 3;
-                        Console.ForegroundColor = ConsoleColor.White;
-
-                        string spaceInstruction = "\n\n\n SPACE to open";
-                        RenderObject(player.X, PLAYER_START_POINT_Y - 2, spaceInstruction);
-                    }
-                    else if (doorPoint[i].playerIsOnGoal == false) //출력안하는걸 검은색으로 대체 
-                    {
-                        Console.ForegroundColor = ConsoleColor.Black;
-                        string spaceInstruction = "\n\n\n SPACE to open";
-                        RenderObject(player.X, PLAYER_START_POINT_Y - 2, spaceInstruction);
-
-
-                    }
-
-                    a = random1.Next() % 3;
+                    Random random1 = new Random();
+                    int a = random1.Next() % 3;
                     Console.ForegroundColor = (ConsoleColor)a;
 
 
 
-                }
 
-
-
-
-
-
-            }
-
-
-
-            // 오브젝트를 그립니다.
-            void RenderObject(int x, int y, string obj)
-            {
-                Console.SetCursorPosition(x, y);
-                Console.Write(obj);
-            }
-
-            void RenderNumber(int x, int y, int number)
-            {
-                Console.SetCursorPosition(x, y);
-                Console.Write(number);
-            }
-
-
-
-
-
-            void Update(ConsoleKey key)
-            {
-                int preX = player.X;
-                int preY = player.Y;
-
-                MovePlayer(key, player);
-
-
-                /// 1P 공백함수 위치 조건문
-                for (int i = 0; i < 3; i++)
-                {
-            
-
+                    for (int i = 0; i < 1; ++i)
                     {
-                        player.PreX = preX;
-                        player.PreY = preY;
-                    }
-                }
-                // 플레이어와 벽의 충돌 처리
+                        string playerInstruction = playStart ? "" : " \n\n\n AD to move";
+                        RenderObject(player.X, PLAYER_START_POINT_Y - 2, playerInstruction);
 
-                // 박스 이동 처리
-                // 플레이어가 박스를 밀었을 때라는 게 무엇을 의미하는가?
-                // => 플레이어가 이동했는데 플레이어의 위치와 박스 위치가 겹쳤다.
-               
+                        if (doorPoint[i].playerIsOnGoal == true || doorPoint[i + 1].playerIsOnGoal == true || doorPoint[i + 2].playerIsOnGoal == true)
+                        {
+                            string playerShape = "!";
+                            RenderObject(player.X, PLAYER_START_POINT_Y - 2, playerShape);
+                        }
+
+                        else
+                        {
+                            string playerShape = "@";
+                            RenderObject(player.X, PLAYER_START_POINT_Y - 2, playerShape);
+                        }
+
+
+
+                        RenderObject(player.X, player.Y - 1, "U");
+                        if (doorPoint[i].playerIsOnGoal == true || doorPoint[i + 1].playerIsOnGoal == true || doorPoint[i + 2].playerIsOnGoal == true)
+                        {
+                            a = random1.Next() % 3;
+                            Console.ForegroundColor = ConsoleColor.White;
+
+                            string spaceInstruction = "\n\n\n SPACE to open";
+                            RenderObject(player.X, PLAYER_START_POINT_Y - 2, spaceInstruction);
+                        }
+                        else if (doorPoint[i].playerIsOnGoal == false) //출력안하는걸 검은색으로 대체 
+                        {
+                            Console.ForegroundColor = ConsoleColor.Black;
+                            string spaceInstruction = "\n\n\n SPACE to open";
+                            RenderObject(player.X, PLAYER_START_POINT_Y - 2, spaceInstruction);
+
+
+                        }
+
+                        a = random1.Next() % 3;
+                        Console.ForegroundColor = (ConsoleColor)a;
+
+
+
+
+                    }
+
+
+
+
+
+                }
+
+
+
+                // 오브젝트를 그립니다.
+                void RenderObject(int x, int y, string obj)
+                {
+                    Console.SetCursorPosition(x, y);
+                    Console.Write(obj);
+                }
+
+                void RenderNumber(int x, int y, int number)
+                {
+                    Console.SetCursorPosition(x, y);
+                    Console.Write(number);
+                }
+
+
+
+
+
+                void Update(ConsoleKey key)
+                {
+                    int preX = player.X;
+                    int preY = player.Y;
+
+                    MovePlayer(key, player);
+
+
+
+                    /// 1P 공백함수 위치 조건문
+                    for (int i = 0; i < 3; i++)
+                    {
+
+
+                        {
+                            player.PreX = preX;
+                            player.PreY = preY;
+                        }
+                    }
+                    // 플레이어와 벽의 충돌 처리
+
+                    // 박스 이동 처리
+                    // 플레이어가 박스를 밀었을 때라는 게 무엇을 의미하는가?
+                    // => 플레이어가 이동했는데 플레이어의 위치와 박스 위치가 겹쳤다.
+
                     if (false == IsCollided(player.X, player.Y, KeyLocations[0].X, KeyLocations[0].Y))
-                 {
-                    switch (player.MoveDirection)
                     {
-                        case Direction.Left:
-                            //boxForFirst[i].X = Math.Clamp(boxForFirst[i].X - 2, MIN_X, MAX_X);
-                            //player.X = boxForFirst[i].X + 2;
-                            //player.PushedBoxIndex = i;
-
-
-                         
-
-                            break;
-                        case Direction.Right:
-                            //boxForFirst[i].X = Math.Clamp(boxForFirst[i].X + 2, MIN_X, MAX_X);
-                            //player.X = boxForFirst[i].X + 2;
-                            //player.PushedBoxIndex = i;
-                           
-
-
-                            break;
-
-                        default:
-                            Console.Clear();
-                            Console.WriteLine($"[Error] 플레이어 이동 방향 데이터가 오류입니다. : {player.MoveDirection}");
-
-                            return;
-                    }
-                }
-
-
-                  
-
-                
-
-                for (int DoorID = 0; DoorID < DOOR_COUNT; ++DoorID) // 모든 골 지점에 대해서
-                {
-                    // 플레이어가 도어입구에 있는지 확인한다.
-                    doorPoint[DoorID].playerIsOnGoal = false; // 없을 가능성이 높기 때문에 false로 초기화 한다.
-
-
-                    for (int goalId = 0; goalId < GOAL_COUNT; ++goalId) // 모든 박스에 대해서
-                    {
-                        // 박스가 골 지점 위에 있는지 확인한다.
-                        if (player.X == doorPoint[DoorID].X)
+                        switch (player.MoveDirection)
                         {
+                            case Direction.Left:
 
+                                break;
+                            case Direction.Right:
 
-                            doorPoint[DoorID].playerIsOnGoal = true; // 박스가 골 위에 있다는 사실을 저장해둔다.
+                                break;
+                            default:
+                                Console.Clear();
+                                Console.WriteLine($"[Error] 플레이어 이동 방향 데이터가 오류입니다. : {player.MoveDirection}");
 
-                            break;
+                                return;
                         }
                     }
-                }
 
 
 
-                // 플레이어를 이동시킨다.
-                // 실제메모리는 힙 , 메모리는 스택
-                void MovePlayer(ConsoleKey key, Player playerFirst)
-                {//플레이어 이동함수
 
-                    if (key == ConsoleKey.A)
+                    if (IsCollided(player.X, player.Y, 0, 15))
                     {
 
-                        playerFirst.X = Math.Max(MIN_X, playerFirst.X - 1);
-                        playerFirst.MoveDirection = Direction.Left;
-                        playStart = true;
+
+
+
                     }
 
-                    if (key == ConsoleKey.D)
-                    {
 
-                        playerFirst.X = Math.Min(playerFirst.X + 1, MAX_X);
-                        playerFirst.MoveDirection = Direction.Right;
-                        playStart = true;
-                    }
-                    for(int i =0 ; i < DOOR_COUNT;i++)
+                    for (int DoorID = 0; DoorID < DOOR_COUNT; ++DoorID) // 모든 골 지점에 대해서
                     {
-                        if (key == ConsoleKey.Spacebar || doorPoint[i].playerIsOnGoal == true)
+                        // 플레이어가 도어입구에 있는지 확인한다.
+                        doorPoint[DoorID].playerIsOnGoal = false; // 없을 가능성이 높기 때문에 false로 초기화 
+
+
+                        for (int goalId = 0; goalId < GOAL_COUNT; ++goalId) // 모든 박스에 대해서
                         {
-                            int a = random.Next(0,15);
-                            Console.BackgroundColor = (ConsoleColor)a;
+                            // 박스가 골 지점 위에 있는지 확인한다.
+                            if (player.X == doorPoint[DoorID].X)
+                            {
+
+
+                                doorPoint[DoorID].playerIsOnGoal = true; // 박스가 골 위에 있다는 사실을 저장해둔다.
+
+                                break;
+                            }
+                        }
+                    }
+
+
+
+                    // 플레이어를 이동시킨다.
+                    // 실제메모리는 힙 , 메모리는 스택
+                    void MovePlayer(ConsoleKey key, Player playerFirst)
+                    {//플레이어 이동함수
+
+                        if (key == ConsoleKey.A)
+                        {
+
+                            playerFirst.X = Math.Max(MIN_X, playerFirst.X - 1);
+                            playerFirst.MoveDirection = Direction.Left;
+                            playStart = true;
+                        }
+
+                        if (key == ConsoleKey.D)
+                        {
+
+                            playerFirst.X = Math.Min(playerFirst.X + 1, MAX_X);
+                            playerFirst.MoveDirection = Direction.Right;
+                            playStart = true;
+                        }
+
+                        if (key == ConsoleKey.Spacebar && (
+                        doorPoint[0].playerIsOnGoal == true ||
+                        doorPoint[1].playerIsOnGoal == true ||
+                        doorPoint[2].playerIsOnGoal == true))
+
+                        {
+
+                            // Space == Murder Intiaizlizing
+                            timeClock.murder.InitailzieMurder(70);
+
+                            int a = random.Next(0, 15);
+
+                            Console.ForegroundColor = (ConsoleColor)a;
                             Render();
-                            Console.Clear();
 
-                            FIRST_DOOR_LOCATION = random.Next(5, 30);
-                            SECOND_DOOR_LOCATION = random.Next(30, 50);
+                            KeyLocations[0].X = random.Next(5, 75);
+                            FIRST_DOOR_LOCATION = random.Next(1, 30);
+                            SECOND_DOOR_LOCATION = random.Next(40, 50);
                             THIRD_DOOR_LOCATION = SECOND_DOOR_LOCATION;
-                            
-                           
+                            doorPoint[0].X = FIRST_DOOR_LOCATION + 4;
+                            doorPoint[1].X = SECOND_DOOR_LOCATION + 4;
+                            doorPoint[2].X = SECOND_DOOR_LOCATION + 4;
 
+                            timeClock.randomMoveMin = random.Next(30, 33);
+                            timeClock.randomMoveMax = random.Next(33, 120);
+
+
+                            //murder 초기화
+
+
+                          
+                            if (b == 0)
+                            {
+                                Console.BackgroundColor = (ConsoleColor)0;
+                            }
+                            else
+                            {
+                                Console.BackgroundColor = (ConsoleColor)15;
+                            }
+
+                            b = (b + 1) % 2;
+
+
+                            firstDoor.PaintDoor(FIRST_DOOR_LOCATION, 5, 12); //argument는 Startpoint
+                            secondDoor.PaintDoor(SECOND_DOOR_LOCATION, 5, 5);
+                            thirdDoor.PaintDoor(SECOND_DOOR_LOCATION, 5, 4);
+
+
+
+
+
+                            Console.Clear();
                         }
+
+
+
                     }
-                  
-                    
+
+
+
+
                 }
-
-
-
-
-            }
-            // 두 물체가 충돌했는지 판별합니다.
-              bool IsCollided(int x1, int y1, int x2, int y2 )
-            {
-                if (x1 == x2)
+                // 두 물체가 충돌했는지 판별합니다.
+                bool IsCollided(int x1, int y1, int x2, int y2)
                 {
-                    keyCount++;
-                    Console.Clear();
-                    message.PrintMessage();
-                    Random random = new Random();
-                    KeyLocations[0].X = random.Next(5, 50);
-                    return true;
-                  
+                    if (x1 == x2)
+                    {
+                        keyCount++;
+                        Console.Clear();
+                        message.PrintMessage();
+                        Random random = new Random();
+                        // KeyLocations[0].X = random.Next(5, 50);
+                        KeyLocations[0].X = 70;
+
+                        timeClock.randomMoveMin = random.Next(1, 10);
+                        timeClock.randomMoveMax = random.Next(20, 120);
+                        Console.Clear();
+
+                        return true;
+
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
                 }
-                else
-                {
-                    return false;
-                }
-               
             }
+
+
         }
 
-
     }
-
 }
 
 
