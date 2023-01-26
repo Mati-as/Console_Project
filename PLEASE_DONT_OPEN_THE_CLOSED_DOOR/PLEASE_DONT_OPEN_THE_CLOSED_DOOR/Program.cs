@@ -246,7 +246,7 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
             while (true)
             {
                 
-                Thread.Sleep(17);
+                Thread.Sleep(11);
                 Render();
 
 
@@ -415,7 +415,7 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
                     MovePlayer(key, player);
 
 
-                    if (timeClock.randomMoveMax > 80)
+                    if (timeClock.randomMoveMax > 70)
                     {
                         timeClock.RenderRunMessage(player.X);
 
@@ -430,7 +430,7 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
 
                         Console.Clear();
                         Console.ForegroundColor = ConsoleColor.Red;
-                        string a = "Buen trabajo ^^";
+                        string a = " Good Job, Buen trabajo ^^";
 
                         for (int i = 0; i < 100; i++)
                         {

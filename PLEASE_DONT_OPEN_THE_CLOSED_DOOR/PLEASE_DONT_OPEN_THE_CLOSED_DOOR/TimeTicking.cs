@@ -197,7 +197,7 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
             }
 
            Console.ForegroundColor = ConsoleColor.Red;
-           Console.SetCursorPosition(x + 4, 24);
+           Console.SetCursorPosition(0, 20);
 
 
 
