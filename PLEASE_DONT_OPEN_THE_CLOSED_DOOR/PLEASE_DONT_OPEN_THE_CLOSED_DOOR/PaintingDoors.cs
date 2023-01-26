@@ -98,7 +98,7 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
                 Random random = new Random();
                 int a = random.Next() % 6;
 
-                if (a == 0)
+                if (a == 0)     
                 {
                     a = 12;
                 }

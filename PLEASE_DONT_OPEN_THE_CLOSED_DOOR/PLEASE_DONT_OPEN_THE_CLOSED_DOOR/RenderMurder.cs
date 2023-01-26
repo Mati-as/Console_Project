@@ -136,12 +136,13 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
 
         public void MoveMurder()
         {
-            if( murder_Prex >= murder_X || murder_X >= 70)
+            if( murder_Prex >= murder_X || murder_X >= 1)
             {
-                murder_Prex = murder_X; //70
+                
 
                 murder_X = murder_X - 1; //69
 
+                murder_Prex = murder_X + 1;
             }
 
           

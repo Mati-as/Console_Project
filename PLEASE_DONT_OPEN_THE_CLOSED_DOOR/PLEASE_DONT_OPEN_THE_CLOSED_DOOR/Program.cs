@@ -38,6 +38,8 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
         internal static Murder ghost = new Murder();
         //internal static RenderMurder murder = new RenderMurder();
 
+        public static ConsoleKey key;
+
 
         public static int keyCount = 0;
 
@@ -159,94 +161,92 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
             //int[] goalPositionsY = { 9, 2, 3 };
 
 
-            ConsoleKey key;
+            
+            //-----------------------------------------------------------------------------------  // intro
+            while (true)
+            {
+                //intro
 
-            ////-----------------------------------------------------------------------------------  // intro
-            //while (true)
-            //{
-            //    //intro
+                
+             
+                
+                Thread.Sleep(200);
+                firstDoor.PaintDoor(20, 5, 15);
+                Console.ForegroundColor = ConsoleColor.White;
+                RenderObject(15, 16, "Hey, do you want to open this door?");
+                Thread.Sleep(2100);
+                RenderObject(15, 17, "If so, say whatever if you want to get in.");
+                Thread.Sleep(2500);
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                RenderObject(15, 19, "> Press Any Key");
 
-            //    firstDoor.PaintDoor(15, 5, 15);
+                RenderObject(0, 0, "");
+               
+                Console.ForegroundColor = ConsoleColor.Red;
 
-            //    Console.ForegroundColor = ConsoleColor.White;
-            //    Thread.Sleep(200);
-            //    RenderObject(15, 15, "Hey, do you want to open this door?");
-            //    Thread.Sleep(2100);
-            //    RenderObject(15, 16, "If so, say whatever if you want to.");
-            //    Thread.Sleep(2500);
-            //    Console.ForegroundColor = ConsoleColor.DarkGray;
-            //    RenderObject(15, 18, "(> Press Any Key)");
+                key = Console.ReadKey().Key;
 
-            //    RenderObject(0, 0, "");
-            //    Console.BackgroundColor = ConsoleColor.Black;
-            //    Console.ForegroundColor = ConsoleColor.Black;
-
-            //    key = Console.ReadKey().Key;
-
-            //    if (Console.KeyAvailable)
-            //    {
-            //        Console.Clear();
-            //        break;
-            //    }
-            //}
-
-            //Console.Clear();
-
-            ////preclude
-            //while (true)
-            //{
-
-            //    Console.ForegroundColor = ConsoleColor.DarkRed;
-
-            //    const int START_OF_DOOR_X = 15;
-            //    const int START_OF_DOOR_Y = 5;
-            //    const int END_OF_DOOR_X = 35;
-            //    const int END_OF_DOOR_Y = 12;
-            //    const int SIZE_OF_DOOR = 10;
-            //    const int DOOR_HANDLE_X = START_OF_DOOR_X + 2;
-            //    const int DOOR_HANDLE_Y = START_OF_DOOR_Y + 5;
-
-            //    firstDoor.PaintDoor(START_OF_DOOR_X, START_OF_DOOR_Y, 4);
+                Console.ForegroundColor = ConsoleColor.Red;
+                break;
+            }
 
 
-            //    Console.ForegroundColor = ConsoleColor.White;
-            //    RenderObject(15, 15, "And you know what?");
-
-            //    Thread.Sleep(2100);
-
-            //    RenderObject(14, 15, "You shouldn't have......");
 
 
-            //    //MUsic play here.
-            //    //playerMusic.SoundPlayers(@"C:\\Users\\Mati Kong\\Documents\\Matias\\doonot_open_the_closed_door\\doonot_open_the_closed_door\\PLEASE_DONT_OPEN_THE_CLOSED_DOOR\\PLEASE_DONT_OPEN_THE_CLOSED_DOOR\\bin\\Debug\\net7.0\\Noisy.wav");
 
-            //    for (int i = 0; i < 6; i++)
-            //    {
-            //        playerMusic.SoundPlayers(@"C:\\Users\\Mati Kong\\Documents\\Matias\\doonot_open_the_closed_door\\doonot_open_the_closed_door\\PLEASE_DONT_OPEN_THE_CLOSED_DOOR\\PLEASE_DONT_OPEN_THE_CLOSED_DOOR\\bin\\Debug\\net7.0\\Growl.wav");
-            //        Thread.Sleep(500);
-            //    }
-            //    Thread.Sleep(30);
-            //    Console.ForegroundColor = ConsoleColor.DarkGray;
-            //    RenderObject(13, 15, " You wouldn't even know......");
-            //    Thread.Sleep(2100);
+            Console.Clear();
+           
 
-            //    for (int i = 0; i < 30; i++)
-            //    {
-            //        Console.ForegroundColor = ConsoleColor.DarkRed;
-            //        RenderObject(15, i, " ----------------------------");
-            //        Console.ForegroundColor = (ConsoleColor)(8);
-            //        Thread.Sleep(50);
-            //    }
-            //    Console.Clear();
-            //    break;
 
-            //}
+
+
+
+
+            //preclude
+            while (true)
+            {
+                firstDoor.PaintDoor(20, 5, 12);
+                firstDoor.PaintDoor(20, 5, 12);
+                RenderObject(14, 15, "And you know what?");
+                RenderObject(14, 16, "You shouldn't have......");
+
+             
+
+
+                for (int i = 0; i < 2; i++)
+                {
+                    playerMusic.SoundPlayers(@"C:\\Users\\Mati Kong\\Documents\\Matias\\doonot_open_the_closed_door\\doonot_open_the_closed_door\\PLEASE_DONT_OPEN_THE_CLOSED_DOOR\\PLEASE_DONT_OPEN_THE_CLOSED_DOOR\\bin\\Debug\\net7.0\\Assets\\Growl.wav");
+                    Thread.Sleep(940);
+                }
+                Thread.Sleep(30);
+                firstDoor.PaintDoor(20, 5, 12);
+                firstDoor.PaintDoor(20, 5, 12);
+                
+                RenderObject(14, 16, "You shouldn't have......");
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+               
+                Thread.Sleep(2100);
+
+            
+
+                for (int i = 0; i < 30; i++)
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    RenderObject(13, i, "-----------------------------");
+                    Console.ForegroundColor = (ConsoleColor)(8);
+                    Thread.Sleep(50);
+                }
+                Console.Clear();
+                break;
+
+            }
 
 
             // --------------------------------------------------------------------------------------게임화면
             while (true)
             {
-                Thread.Sleep(15);
+                
+                Thread.Sleep(17);
                 Render();
 
 
@@ -256,58 +256,17 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
                     //-----------------------------------------------------------------------------input
                     Console.SetCursorPosition(0, 50);
                     Console.ForegroundColor = ConsoleColor.Black;
-                    key = Console.ReadKey().Key;
-                    Update(key);
 
-                    if (timeClock.randomMoveMax > 90)
+                  
+
+                    if (Console.KeyAvailable)
                     {
-                        timeClock.RenderRunMessage(player.X);
+
+                        key = Console.ReadKey().Key;
+                        Update(key);
 
                     }
 
-
-                    if (player.X >= timeClock.murderAtPresent)
-                    {
-
-                        Console.Clear();
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        string a = "DEAD DEAD DEAD";
-
-                        for (int i = 0; i < 100; i++)
-                        {
-
-
-                            RenderObject(1, i + 15, a);
-                            RenderObject(15, i, a);
-
-
-                        }
-                        Thread.Sleep(1500);
-                        return;
-
-
-
-                    }
-                    if (keyCount >= 15)
-                    {
-
-                        Console.Clear();
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        string a = "Buen trabajo ^^";
-
-                        for (int i = 0; i < 100; i++)
-                        {
-
-
-                            RenderObject(1, i + 15, a);
-                            RenderObject(15, i, a);
-
-
-                        }
-                        Thread.Sleep(1500);
-                        return;
-
-                    }
 
                 }
                 //----------------------------------------------------------------------------------------구현부분          
@@ -321,8 +280,8 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
                     RenderObject(70, 10, "K : KEY");
                     
 
-                    RenderObject(1, 18, "Key to escape :");
-                    RenderNumber(15, 18, keyCount);
+                    RenderObject(1, 18, "get 15 Keys to escape :");
+                    RenderNumber(25, 18, keyCount);
 
                     firstDoor.PaintDoor(FIRST_DOOR_LOCATION, 5, 12); //argument는 Startpoint
                     secondDoor.PaintDoor(SECOND_DOOR_LOCATION, 5, 5);
@@ -402,6 +361,33 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
 
 
 
+                    if (player.X >= timeClock.murderAtPresent)
+                    {
+
+                        Console.Clear();
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        string deadMessage = "DEAD DEAD DEAD";
+
+                        for (int i = 0; i < 100; i++)
+                        {
+
+
+                            RenderObject(0, i + 15, deadMessage);
+                            RenderObject(15, i, deadMessage);
+
+                        }
+
+                        for (int i = 0; i < 3; i++)
+                        {
+                            playerMusic.SoundPlayers(@"C:\\Users\\Mati Kong\\Documents\\Matias\\doonot_open_the_closed_door\\doonot_open_the_closed_door\\PLEASE_DONT_OPEN_THE_CLOSED_DOOR\\PLEASE_DONT_OPEN_THE_CLOSED_DOOR\\bin\\Debug\\net7.0\\Assets\\Growl.wav");
+                            Thread.Sleep(940);
+                        }
+                        Thread.Sleep(1500);
+                        return;
+
+
+
+                    }
 
 
                 }
@@ -409,11 +395,7 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
 
 
                 // 오브젝트를 그립니다.
-                void RenderObject(int x, int y, string obj)
-                {
-                    Console.SetCursorPosition(x, y);
-                    Console.Write(obj);
-                }
+                
 
                 void RenderNumber(int x, int y, int number)
                 {
@@ -424,13 +406,45 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
 
 
 
-
+                //보스가 플레이어를 만나면 플레이어 사망
                 void Update(ConsoleKey key)
                 {
                     int preX = player.X;
                     int preY = player.Y;
 
                     MovePlayer(key, player);
+
+
+                    if (timeClock.randomMoveMax > 80)
+                    {
+                        timeClock.RenderRunMessage(player.X);
+
+                    }
+
+
+
+
+                    //키 15개 모을 시 성공
+                    if (keyCount >= 15)
+                    {
+
+                        Console.Clear();
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        string a = "Buen trabajo ^^";
+
+                        for (int i = 0; i < 100; i++)
+                        {
+
+
+                            RenderObject(1, i + 15, a);
+                            RenderObject(15, i, a);
+
+
+                        }
+                        Thread.Sleep(1500);
+                        return;
+
+                    }
 
 
 
@@ -471,6 +485,7 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
 
 
 
+
                     if (IsCollided(player.X, player.Y, 0, 15))
                     {
 
@@ -504,22 +519,22 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
 
                     // 플레이어를 이동시킨다.
                     // 실제메모리는 힙 , 메모리는 스택
-                    void MovePlayer(ConsoleKey key, Player playerFirst)
+                    void MovePlayer(ConsoleKey key, Player player)
                     {//플레이어 이동함수
 
                         if (key == ConsoleKey.A)
                         {
 
-                            playerFirst.X = Math.Max(MIN_X, playerFirst.X - 1);
-                            playerFirst.MoveDirection = Direction.Left;
+                            player.X = Math.Max(MIN_X, player.X - 1);
+                            player.MoveDirection = Direction.Left;
                             playStart = true;
                         }
 
                         if (key == ConsoleKey.D)
                         {
 
-                            playerFirst.X = Math.Min(playerFirst.X + 1, MAX_X);
-                            playerFirst.MoveDirection = Direction.Right;
+                            player.X = Math.Min(player.X + 1, MAX_X);
+                            player.MoveDirection = Direction.Right;
                             playStart = true;
                         }
 
@@ -529,9 +544,9 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
                         doorPoint[2].playerIsOnGoal == true))
 
                         {
-
-                            // Space == Murder Intiaizlizing
                             timeClock.murder.InitailzieMurder(70);
+                            // Space == Murder Intiaizlizing
+
 
                             int a = random.Next(0, 15);
 
@@ -546,8 +561,8 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
                             doorPoint[1].X = SECOND_DOOR_LOCATION + 4;
                             doorPoint[2].X = SECOND_DOOR_LOCATION + 4;
 
-                            timeClock.randomMoveMin = random.Next(30, 33);
-                            timeClock.randomMoveMax = random.Next(33, 120);
+                            timeClock.randomMoveMin = random.Next(10, 60);
+                            timeClock.randomMoveMax = random.Next(40, 120);
 
 
                             //murder 초기화
@@ -572,9 +587,10 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
 
 
 
-
+                           
 
                             Console.Clear();
+                            
                         }
 
 
@@ -612,9 +628,13 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
                 }
             }
 
-
+            void RenderObject(int x, int y, string obj)
+            {
+                Console.SetCursorPosition(x, y);
+                Console.Write(obj);
+            }
         }
-
+      
     }
 }
 

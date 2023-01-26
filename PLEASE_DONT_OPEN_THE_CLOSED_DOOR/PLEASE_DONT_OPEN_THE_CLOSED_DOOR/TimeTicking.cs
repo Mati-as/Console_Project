@@ -55,7 +55,7 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
               //Handle of the door
               //floor
              
-             RenderClock(CLOCK_START_X - 2, CLOCK_START_Y , 60 - (int)timePass);
+             RenderClock(CLOCK_START_X - 2, CLOCK_START_Y , 30 - (int)timePass);
             timePassed++;
 
             timePass = timePassed / 90; //1 second
@@ -115,7 +115,7 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
                 murderAtPresent = murder.murder_X;
             }
 
-            else if (timePassed % 100 > 90 && timePassed % 100 <= 100)
+            else if (timePassed % 120 > 60 && timePassed % 120 <= 70)
             {
 
                 RenderMessage(CLOCK_START_X + 5, CLOCK_START_Y, "                                     ");
@@ -179,9 +179,44 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
                 Console.ForegroundColor = ConsoleColor.DarkRed;
             }
 
+            if (Sokoban.player.MoveDirection == Direction.Right)
+            {
+                Console.SetCursorPosition(x - 1, 12);
+                Console.Write("RUN!!!");
+                Console.SetCursorPosition(x - 4, 12);
+                Console.Write("   ");
 
-            Console.SetCursorPosition(x-1, 12);
-            Console.Write("RUN!!!");
+            }
+            if (Sokoban.player.MoveDirection == Direction.Left)
+            {
+                Console.SetCursorPosition(x - 1, 12);
+                Console.Write("RUN!!!");
+                Console.SetCursorPosition(x + 4, 12);
+                Console.Write("      ");
+
+            }
+
+           Console.ForegroundColor = ConsoleColor.Red;
+           Console.SetCursorPosition(x + 4, 24);
+
+
+
+  
+           Console.WriteLine("===========; . !==========$!..================  !=====$$===========*. ===$  ;=========*- *==========");
+           Console.WriteLine("===========*   ~$=========*. :================; ,=====$=*=======$===, ====, ~=========*! ~$=========");
+           Console.WriteLine("========$===.  ,$========*..-==================  !==================, *===: .===========, $=========");
+           Console.WriteLine("============,.  $**=$=!$;. -$===$$=============: .=================$, !$==*  *=========*; ;=========");
+           Console.WriteLine("===========$: . *=**=**.  ~===================*$  ~=================- :$===. ;=========== ,=========");
+           Console.WriteLine("============!   !===*, . !======================!  *================~ ~====, -$========$=~ *========");
+           Console.WriteLine("=========$=**   ,:~,   ~=======================*=- ,===$============~ ~===$~ .============ ;========");
+           Console.WriteLine("=======$==$*=...    ,;$===$=======================. ~=$$============~ -==$$;  *=========== -========");
+           Console.WriteLine("========*====-     ;==============================;  ;==========$==*~ -====*. !==*========; *====*==");
+           Console.WriteLine("=======$=====~   ,..!$============================$~  !=====*=$===$=~ ~=====, ~============.;=======");
+           Console.WriteLine("=======$=====!   :: .;==============================-  ;==========$$- :====$~ .==$=====$===~-$======");
+           Console.WriteLine("=======$======   -$!  ~=*=========================$==-  ~=========$=. *====$;  =========*==!.=======");
+           Console.WriteLine("=======$======. ..==!. ,====$=========================,  ~===*=====*  ======*. :=$=========*.!=*====");
+           Console.WriteLine("=======$$=====-., =**=, ,==$$==========================-.  ========: ,======$, .====$=$====$-~======");
+     
            
         }
     }

@@ -36,10 +36,10 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
                     Console.ForegroundColor = ConsoleColor.DarkGray;
                 }
 
-                Console.SetCursorPosition(MESSAGE_X, MESSAGE_Y);
-                Console.Write("You've got a key ");
+                Console.SetCursorPosition(MESSAGE_X, MESSAGE_Y+3);
+               
 
-                Console.Write("but you don't think it's over,right?");
+                Console.Write("you don't think it's over,right?");
 
 
 

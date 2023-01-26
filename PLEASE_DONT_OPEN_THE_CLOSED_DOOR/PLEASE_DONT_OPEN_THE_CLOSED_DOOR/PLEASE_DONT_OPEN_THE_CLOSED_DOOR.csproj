@@ -5,6 +5,7 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
   </PropertyGroup>
 
   <ItemGroup>
@@ -86,5 +87,9 @@
     <PackageReference Include="System.Data.Entity.Repository" Version="2.0.0.1" />
     <PackageReference Include="System.Runtime.WindowsRuntime.UI.Xaml" Version="4.7.0" />
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="Xcopy &quot;$(ProjectDir)Assets&quot; &quot;$(OutDir)Assets&quot; /f /i /s /e /y" />
+  </Target>
 
 </Project>
