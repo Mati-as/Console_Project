@@ -13,9 +13,6 @@ using PLEASE_DONT_OPEN_THE_CLOSED_DOOR;
 namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
 {
 
-
-    
-
     public class TimeTicking
     {
         string iString = "I";
@@ -97,7 +94,6 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
 
             }
 
-
             else if (timePassed % 100 > 20 && timePassed % 100 <= 30)
             {
 
@@ -119,7 +115,7 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
             {
 
                 RenderMessage(CLOCK_START_X + 5, CLOCK_START_Y, "                                     ");
-                RenderMessage(CLOCK_START_X + 5, CLOCK_START_Y, "Watch Out!");
+             
                 murder.MoveBackMurder();
                 murderAtPresent = murder.murder_X;
             }

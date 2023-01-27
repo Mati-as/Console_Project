@@ -162,7 +162,7 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
 
 
             
-            //-----------------------------------------------------------------------------------  // intro
+            //// intro
             while (true)
             {
                 //intro
@@ -190,16 +190,7 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
                 break;
             }
 
-
-
-
-
             Console.Clear();
-           
-
-
-
-
 
 
             //preclude
@@ -242,7 +233,7 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
             }
 
 
-            // --------------------------------------------------------------------------------------게임화면
+            // in play
             while (true)
             {
                 
@@ -347,7 +338,7 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
                             Console.ForegroundColor = ConsoleColor.Black;
                             string spaceInstruction = "\n\n\n SPACE to open";
                             RenderObject(player.X, PLAYER_START_POINT_Y - 2, spaceInstruction);
-
+                           
 
                         }
 
@@ -377,14 +368,15 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
 
                         }
 
-                        for (int i = 0; i < 3; i++)
+                        for (int i = 0; i < 2; i++)
                         {
                             playerMusic.SoundPlayers(@"C:\\Users\\Mati Kong\\Documents\\Matias\\doonot_open_the_closed_door\\doonot_open_the_closed_door\\PLEASE_DONT_OPEN_THE_CLOSED_DOOR\\PLEASE_DONT_OPEN_THE_CLOSED_DOOR\\bin\\Debug\\net7.0\\Assets\\Growl.wav");
                             Thread.Sleep(940);
+
                         }
+
                         Thread.Sleep(1500);
                         return;
-
 
 
                     }
@@ -415,7 +407,7 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
                     MovePlayer(key, player);
 
 
-                    if (timeClock.randomMoveMax > 70)
+                    if (timeClock.randomMoveMax > 90)
                     {
                         timeClock.RenderRunMessage(player.X);
 
@@ -545,6 +537,7 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
 
                         {
                             timeClock.murder.InitailzieMurder(70);
+                            timeClock.murderAtPresent = 70;
                             // Space == Murder Intiaizlizing
 
 
