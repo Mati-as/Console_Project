@@ -257,6 +257,10 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
                         Update(key);
 
                     }
+                    else
+                    {
+                        Update(key);
+                    }
 
 
                 }
