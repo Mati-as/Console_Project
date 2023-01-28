@@ -31,7 +31,7 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
         //clock constructor
         internal static TimeTicking timeClock = new TimeTicking();
 
-        //Doors
+        //Doors 
         internal static PaintingDoor firstDoor = new PaintingDoor();
         internal static PaintingDoor secondDoor = new PaintingDoor();
         internal static PaintingDoor thirdDoor = new PaintingDoor();
@@ -142,25 +142,6 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
 
 
 
-
-
-
-
-            //// 박스 위치를 저장하기 위한 변수
-            //int[] boxPositionsX = { 5, 7, 4 };
-            //int[] boxPositionsY = { 5, 3, 4 };
-            //// 박스가 골 위에 있는지를 저장하기 위한 변수
-            //bool[] isBoxOnGoal = new bool[BOX_COUNT];
-
-            //// 벽 위치를 저장하기 위한 변수
-            //int[] wallPositionsX = { 7, 8 };
-            //int[] wallPositionsY = { 7, 5 };
-
-            //// 골 위치를 저장하기 위한 변수
-            //int[] goalPositionsX = { 9, 1, 3 };
-            //int[] goalPositionsY = { 9, 2, 3 };
-
-
             
             //// intro
             while (true)
@@ -204,7 +185,7 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
              
 
 
-                for (int i = 0; i < 2; i++)
+                for (int i = 0; i < 1; i++)
                 {
                     playerMusic.SoundPlayers(@"C:\\Users\\Mati Kong\\Documents\\Matias\\doonot_open_the_closed_door\\doonot_open_the_closed_door\\PLEASE_DONT_OPEN_THE_CLOSED_DOOR\\PLEASE_DONT_OPEN_THE_CLOSED_DOOR\\bin\\Debug\\net7.0\\Assets\\Growl.wav");
                     Thread.Sleep(940);
@@ -231,6 +212,7 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
                 break;
 
             }
+            playerMusic.SoundPlayers(@"C:\\Users\\Mati Kong\\Documents\\Matias\\doonot_open_the_closed_door\\doonot_open_the_closed_door\\PLEASE_DONT_OPEN_THE_CLOSED_DOOR\\PLEASE_DONT_OPEN_THE_CLOSED_DOOR\\bin\\Debug\\net7.0\\Assets\\Background.wav");
 
 
             // in play
@@ -239,8 +221,7 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
                 
                 Thread.Sleep(11);
                 Render();
-
-
+             
                 if (Console.KeyAvailable)
                 {
 
@@ -411,7 +392,7 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
                     MovePlayer(key, player);
 
 
-                    if (timeClock.randomMoveMax > 90)
+                    if (timeClock.randomMoveMax > 94)
                     {
                         timeClock.RenderRunMessage(player.X);
 
@@ -454,11 +435,8 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
                             player.PreY = preY;
                         }
                     }
-                    // 플레이어와 벽의 충돌 처리
+   
 
-                    // 박스 이동 처리
-                    // 플레이어가 박스를 밀었을 때라는 게 무엇을 의미하는가?
-                    // => 플레이어가 이동했는데 플레이어의 위치와 박스 위치가 겹쳤다.
 
                     if (false == IsCollided(player.X, player.Y, KeyLocations[0].X, KeyLocations[0].Y))
                     {
@@ -551,7 +529,7 @@ namespace PLEASE_DONT_OPEN_THE_CLOSED_DOOR
                             Render();
 
                             KeyLocations[0].X = random.Next(5, 75);
-                            FIRST_DOOR_LOCATION = random.Next(1, 30);
+                            FIRST_DOOR_LOCATION = random.Next(1, 20);
                             SECOND_DOOR_LOCATION = random.Next(40, 50);
                             THIRD_DOOR_LOCATION = SECOND_DOOR_LOCATION;
                             doorPoint[0].X = FIRST_DOOR_LOCATION + 4;
